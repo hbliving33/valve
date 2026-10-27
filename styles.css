@@ -5,7 +5,7 @@
   --ink-soft: #4A4F55;
   --rule: #E3DED4;
   --brass: #B4873A;
-  --vicky: #6B1E2B;   /* oxblood */
+  --vicki: #6B1E2B;   /* oxblood */
   --ayden: #2C3E57;   /* slate navy */
   --lauren: #B4873A;  /* brass */
   --vincent: #2F4B3A; /* forest */
@@ -38,7 +38,7 @@ a { color: inherit; }
 .brand { display: flex; align-items: center; gap: 0.7rem; text-decoration: none; }
 .brand svg { width: 2.4rem; height: 2.4rem; }
 .brand-name { font-family: var(--display); font-weight: 700; font-size: 1.45rem; letter-spacing: 0.06em; line-height: 1; }
-.brand-name small { display: block; font-family: var(--body); font-weight: 500; font-size: 0.62rem; letter-spacing: 0.42em; color: var(--vicky); margin-top: 0.25rem; }
+.brand-name small { display: block; font-family: var(--body); font-weight: 500; font-size: 0.62rem; letter-spacing: 0.42em; color: var(--vicki); margin-top: 0.25rem; }
 .site-nav { display: flex; gap: 1.4rem; font-size: 0.95rem; }
 .site-nav a { text-decoration: none; color: var(--ink-soft); }
 .site-nav a:hover { color: var(--ink); text-decoration: underline; text-underline-offset: 0.3em; }
@@ -75,7 +75,7 @@ a { color: inherit; }
   font-weight: 500;
   cursor: pointer;
 }
-.button:hover { background: var(--vicky); }
+.button:hover { background: var(--vicki); }
 
 /* The acronym: the memorable thing */
 .acronym { border-block: 1px solid var(--rule); background: #fff; }
@@ -132,7 +132,7 @@ a { color: inherit; }
   text-decoration: underline; text-underline-offset: 0.3em; text-decoration-thickness: 2px;
 }
 
-.c-vicky { --c: var(--vicky); }
+.c-vicki { --c: var(--vicki); }
 .c-ayden { --c: var(--ayden); }
 .c-lauren { --c: var(--lauren); }
 .c-vincent { --c: var(--vincent); }

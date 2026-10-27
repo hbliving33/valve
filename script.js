@@ -2,7 +2,7 @@
 // Change this one line to set where contact messages go.
 const CONTACT_EMAIL = "hello@valvepartners.com";
 
-// Links like "Talk to Vicky" jump to the form with that person picked.
+// Links like "Talk to Vicki" jump to the form with that person picked.
 document.querySelectorAll("[data-topic]").forEach((link) => {
   link.addEventListener("click", () => {
     const topic = document.getElementById("topic");
