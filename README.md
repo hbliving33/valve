@@ -6,6 +6,7 @@ Website for valvepartners.com.  VALVE is the family: Vicki, Ayden, Lauren, Vince
 
 - `index.html`: home page, the five partners, and the contact form
 - `tutoring.html`: Ayden's tutoring page (Humboldt County)
+- `lauren.html`: Lauren's page, bread and soccer training (bread photos go in `assets/lauren/`)
 
 ## Logo
 
