@@ -14,6 +14,10 @@ Website for valvepartners.com.  VALVE is the family: Vicki, Ayden, Lauren, Vince
 - `assets/logo/valve-wheel.svg`: the wheel by itself (also the site icon)
 - `assets/logo/concepts/`: the two alternate concepts
 
+## Custom domain
+
+No CNAME file yet, so the site runs at the GitHub test address.  Add a CNAME file containing valvepartners.com when the domain is ready.
+
 ## Settings to change
 
 - Contact email: the first line of `script.js` (`CONTACT_EMAIL`)
