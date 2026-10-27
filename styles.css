@@ -212,3 +212,7 @@ textarea { min-height: 8rem; resize: vertical; }
 .logo-card figcaption span { display: block; }
 .logo-card .now { display: inline-block; color: var(--vicki); font-weight: 500; margin: 0.15rem 0; }
 .logo-card.current img { border: 2px solid var(--brass); }
+.logo-theme { padding-top: clamp(2rem, 5vw, 3rem); border-bottom: 1px solid var(--rule); }
+.logo-theme h2 { font-family: var(--display); font-weight: 600; font-size: clamp(1.7rem, 3.4vw, 2.3rem); line-height: 1.1; margin: 0 0 0.3rem; }
+.logo-theme > p { color: var(--ink-soft); margin: 0; }
+.logo-theme .logo-grid { padding-block: 1.4rem 2.4rem; }
