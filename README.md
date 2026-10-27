@@ -1,1 +1,20 @@
-# valve
+# Valve Partners
+
+Website for valvepartners.com.  VALVE is the family: Vicky, Ayden, Lauren, Vincent and Eric.
+
+## Pages
+
+- `index.html`: home page, the five partners, and the contact form
+- `tutoring.html`: Ayden's tutoring page (Humboldt County)
+
+## Logo
+
+- `assets/logo/valve-partners-stacked.svg`: main logo (handwheel over the wordmark)
+- `assets/logo/valve-partners-horizontal.svg`: wide version for headers and letterhead
+- `assets/logo/valve-wheel.svg`: the wheel by itself (also the site icon)
+- `assets/logo/concepts/`: the two alternate concepts
+
+## Settings to change
+
+- Contact email: the first line of `script.js` (`CONTACT_EMAIL`)
+- Vincent's business link: the link with `id="vincent-link"` in `index.html`
