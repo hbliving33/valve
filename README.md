@@ -21,4 +21,4 @@ No CNAME file yet, so the site runs at the GitHub test address.  Add a CNAME fil
 ## Settings to change
 
 - Contact email: the first line of `script.js` (`CONTACT_EMAIL`)
-- Vincent's business link: the link with `id="vincent-link"` in `index.html`
+- Vincent's business link (TopFlight Services): his name and the link with `id="vincent-link"` in `index.html`

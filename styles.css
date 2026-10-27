@@ -125,6 +125,8 @@ a { color: inherit; }
   font-size: clamp(4.5rem, 12vw, 8.5rem); line-height: 0.8;
 }
 .partner h3 { font-family: var(--display); font-weight: 600; font-size: clamp(1.8rem, 3.6vw, 2.5rem); line-height: 1.05; margin: 0 0 0.2rem; }
+.partner h3 .name-link { text-decoration: none; }
+.partner h3 .name-link:hover { text-decoration: underline; text-underline-offset: 0.15em; text-decoration-thickness: 2px; color: var(--c); }
 .partner .role { color: var(--c); font-weight: 500; margin: 0 0 0.9rem; }
 .partner p { max-width: var(--measure); margin: 0 0 1rem; }
 .partner .link {
