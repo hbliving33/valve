@@ -66,7 +66,8 @@
         <h2>Contact Ayden</h2>
         <p>Send a note with the student's grade and what they need help with, and I'll get back to you.</p>
       </div>
-      <form id="contact-form" novalidate>
+      <form id="contact-form" data-site="ayden" novalidate>
+        <input type="text" name="_honey" tabindex="-1" autocomplete="off" class="honey" aria-hidden="true">
         <input type="hidden" name="topic" value="Ayden">
         <label>Your name
           <input name="name" autocomplete="name" required>
@@ -79,7 +80,6 @@
         </label>
         <button class="button" type="submit">Send message</button>
         <p class="form-status" id="form-status" role="status"></p>
-        <p class="form-note">Sending opens your email app with the message filled in.</p>
       </form>
     </div>
   </section>

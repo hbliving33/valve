@@ -242,3 +242,5 @@ textarea { min-height: 8rem; resize: vertical; }
 .panel .tagline a { color: inherit; text-decoration: none; }
 .panel .tagline a:hover { text-decoration: underline; text-underline-offset: 0.3em; }
 @media (max-width: 760px) { .value { grid-template-columns: 1fr; } }
+
+.honey { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }

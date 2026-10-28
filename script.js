@@ -1,6 +1,14 @@
 // Valve Partners site script
-// Change this one line to set where contact messages go.
-const CONTACT_EMAIL = "hello@valvepartners.com";
+// Contact forms save to the Supabase project "valve-partners" and email a copy through FormSubmit.
+const SB_URL = "https://mefvxxoytleyfjbwtxix.supabase.co";
+const SB_KEY = "sb_publishable_Ex6vMImvvkTdQsFYprve7g_awiuqxEs";   // public key: can only add form entries and count visits
+
+// Where each form's email goes.  Change an address here to route that form somewhere else.
+const MAIL_TO = {
+  valve: "[email removed]",    // home page form
+  ayden: "[email removed]",    // Ayden's tutoring page
+  lauren: "[email removed]",   // Lauren's page
+};
 
 // Links like "Talk to Vicki" jump to the form with that person picked.
 document.addEventListener("click", (e) => {
@@ -49,7 +57,8 @@ if (mark && panel) {
 const form = document.getElementById("contact-form");
 if (form) {
   const status = document.getElementById("form-status");
-  form.addEventListener("submit", (e) => {
+  const site = form.dataset.site || "valve";
+  form.addEventListener("submit", async (e) => {
     e.preventDefault();
     const data = new FormData(form);
     const name = (data.get("name") || "").trim();
@@ -57,19 +66,52 @@ if (form) {
     const message = (data.get("message") || "").trim();
     const topic = data.get("topic") || "Anyone";
 
+    if (data.get("_honey")) { form.reset(); status.textContent = "Thanks.  Your message was sent."; return; }   // bots fill hidden fields
     if (!name || !email || !message) {
       status.textContent = "Fill in your name, email and message, then send again.";
       return;
     }
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      status.textContent = "Check your email address. It should look like name@example.com.";
+      status.textContent = "Check your email address.  It should look like name@example.com.";
       return;
     }
 
-    const subject = `Valve Partners: message for ${topic}`;
-    const body = `${message}\n\nFrom: ${name}\nEmail: ${email}\nFor: ${topic}`;
-    window.location.href =
-      `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-    status.textContent = "Your email app should open with the message ready to send.";
+    const send = form.querySelector("button[type=submit]");
+    send.disabled = true; send.textContent = "Sending...";
+    status.textContent = "";
+
+    const row = { site, name, email, topic, message, page: location.pathname };
+    const db = fetch(`${SB_URL}/rest/v1/contact_requests`, {
+      method: "POST",
+      headers: { apikey: SB_KEY, "Content-Type": "application/json", Prefer: "return=minimal" },
+      body: JSON.stringify(row),
+    }).then((r) => r.ok).catch(() => false);
+    const mail = fetch(`https://formsubmit.co/ajax/${MAIL_TO[site] || MAIL_TO.valve}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", Accept: "application/json" },
+      body: JSON.stringify({ _subject: `Valve Partners website: message for ${topic}`, _template: "table", _captcha: "false",
+        Name: name, Email: email, _replyto: email, For: topic, Message: message, Page: location.pathname }),
+    }).then((r) => r.ok).catch(() => false);
+
+    const [a, b] = await Promise.all([db, mail]);
+    send.disabled = false; send.textContent = "Send message";
+    if (a || b) {
+      form.reset();
+      status.textContent = "Thanks.  Your message was sent, and we'll get back to you soon.";
+    } else {
+      status.textContent = "Sorry, the message didn't go through.  Please try again in a minute.";
+    }
   });
+}
+
+// Visit counter: one count per page per browser session.  No cookies, no personal data.
+if (!/^(localhost|127\.)/.test(location.hostname) && location.protocol.startsWith("http")) {
+  const path = location.pathname.replace(/index\.html$/, "") || "/";
+  let seen = false;
+  try { const k = "valve-hit:" + path; seen = !!sessionStorage.getItem(k); sessionStorage.setItem(k, "1"); } catch (e) {}
+  if (!seen) fetch(`${SB_URL}/rest/v1/rpc/count_hit`, {
+    method: "POST", keepalive: true,
+    headers: { apikey: SB_KEY, "Content-Type": "application/json" },
+    body: JSON.stringify({ p_site: "valve", p_path: path }),
+  }).catch(() => {});
 }

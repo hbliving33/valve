@@ -147,7 +147,8 @@
         <h2>Get in touch</h2>
         <p>Tell us what you need and who you'd like to reach.  We'll get your message to the right person.</p>
       </div>
-      <form id="contact-form" novalidate>
+      <form id="contact-form" data-site="valve" novalidate>
+        <input type="text" name="_honey" tabindex="-1" autocomplete="off" class="honey" aria-hidden="true">
         <label>Your name
           <input name="name" autocomplete="name" required>
         </label>
@@ -169,7 +170,6 @@
         </label>
         <button class="button" type="submit">Send message</button>
         <p class="form-status" id="form-status" role="status"></p>
-        <p class="form-note">Sending opens your email app with the message filled in.</p>
       </form>
     </div>
   </section>
