@@ -26,6 +26,7 @@ The site runs at valvepartners.com (CNAME file).  DNS is in Cloudflare, set up t
 
 ## Settings to change
 
+- After changing `script.js` or `styles.css`, run `python3 stamp.py` so visitors get the new version right away.
 - Contact forms: each form saves to the Supabase project "valve-partners" (table `contact_requests`, labeled by `site`) and emails a copy through FormSubmit.  Email addresses per form are in `MAIL_TO` at the top of `script.js`.
 - Vincent's business link (TopFlight Services): his name and the link with `id="vincent-link"` in `index.html`
 
