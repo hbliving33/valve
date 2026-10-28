@@ -44,7 +44,7 @@ a { color: inherit; }
 .brand-name { font-family: var(--display); font-weight: 800; font-size: 1.3rem; letter-spacing: 0.08em; line-height: 1; }
 .brand-name small { display: block; font-family: var(--body); font-weight: 600; font-size: 0.58rem; letter-spacing: 0.5em; color: var(--sky-2); margin-top: 0.3rem; }
 .site-nav { display: flex; gap: 1.5rem; font-size: 0.95rem; }
-.site-nav a { text-decoration: none; color: var(--sky-2); }
+.site-nav a { text-decoration: none; color: var(--sky-2); white-space: nowrap; }
 .site-nav a:hover { color: #fff; text-decoration: underline; text-decoration-color: var(--gold); text-underline-offset: 0.35em; }
 
 /* Stage: navy hero with the interactive logo */
@@ -214,3 +214,25 @@ textarea { min-height: 8rem; resize: vertical; }
 .logo-theme h2 { font-family: var(--display); font-weight: 800; font-size: clamp(1.5rem, 3vw, 2rem); line-height: 1.15; margin: 0 0 0.3rem; }
 .logo-theme > p { color: var(--ink-soft); margin: 0; }
 .logo-theme .logo-grid { padding-block: 1.4rem 2.4rem; }
+
+/* Values page */
+.values { padding-block: clamp(2.5rem, 6vw, 4.5rem); }
+.value {
+  display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: clamp(1rem, 5vw, 4rem);
+  padding-block: clamp(1.6rem, 4vw, 2.6rem); border-top: 1px solid var(--rule);
+}
+.value:last-child { border-bottom: 1px solid var(--rule); }
+.value h2 {
+  font-family: var(--display); font-weight: 800; font-size: clamp(1.6rem, 3.4vw, 2.3rem); line-height: 1.1; letter-spacing: -0.01em; margin: 0;
+  padding-left: 1rem; border-left: 5px solid var(--gold);
+}
+.value p { margin: 0; max-width: var(--measure); font-size: 1.1rem; color: var(--ink-soft); }
+.values-close { background: var(--mist); padding-block: clamp(2.5rem, 6vw, 3.5rem); }
+.values-close .wrap { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem; }
+.values-close p { margin: 0; font-family: var(--display); font-weight: 800; font-size: clamp(1.3rem, 2.6vw, 1.7rem); }
+.values-close .button { background: var(--navy); color: #fff; }
+.values-close .button:hover { background: var(--navy-3); }
+.site-nav a[aria-current="page"] { color: #fff; text-decoration: underline; text-decoration-color: var(--gold); text-underline-offset: 0.35em; }
+.panel .tagline a { color: inherit; text-decoration: none; }
+.panel .tagline a:hover { text-decoration: underline; text-underline-offset: 0.3em; }
+@media (max-width: 760px) { .value { grid-template-columns: 1fr; } }
