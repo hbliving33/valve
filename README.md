@@ -22,7 +22,7 @@ Chosen logo: "Under One Roof" in Gold on Navy (option H4).  Colors: navy #1B1F3B
 
 ## Custom domain
 
-No CNAME file yet, so the site runs at the GitHub test address.  Add a CNAME file containing valvepartners.com when the domain is ready.
+The site runs at valvepartners.com (CNAME file).  DNS is in Cloudflare, set up the same way as caliit.com: three A records for valvepartners.com (185.199.109.153, 185.199.110.153, 185.199.111.153) and a www CNAME to hbliving33.github.io, all proxied, with SSL/TLS mode Full.
 
 ## Settings to change
 
