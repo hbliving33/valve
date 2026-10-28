@@ -83,6 +83,7 @@ a { color: inherit; }
   font-family: var(--display); font-weight: 800;
   font-size: clamp(2.3rem, 5.2vw, 3.9rem); line-height: 1.05; letter-spacing: -0.015em; margin: 0 0 1rem;
 }
+.panel .tagline { font-family: var(--display); font-weight: 700; font-size: clamp(1.1rem, 2vw, 1.35rem); color: var(--gold-bright); margin: -0.4rem 0 1.1rem; }
 .panel .role { font-weight: 700; font-size: 1.05rem; margin: 0 0 1rem; color: var(--gold-bright); }
 .panel p { max-width: var(--measure); color: var(--sky-2); font-size: 1.12rem; margin: 0 0 1.4rem; }
 .panel .hint { font-size: 0.95rem; color: var(--sky-3); margin: 0; }
@@ -127,6 +128,8 @@ a { color: inherit; }
 .partner h3 .name-link:hover { text-decoration: underline; text-decoration-color: var(--gold); text-underline-offset: 0.15em; text-decoration-thickness: 3px; }
 .partner .role { color: var(--ink-soft); font-weight: 700; margin: 0 0 0.9rem; }
 .partner p { max-width: var(--measure); margin: 0 0 1rem; }
+.partner p + .role { margin-top: 1.2rem; }
+.panel p + .role { margin-top: -0.2rem; }
 .partner .link {
   display: inline-block; font-weight: 700; color: var(--navy);
   text-decoration: underline; text-decoration-color: var(--gold); text-underline-offset: 0.35em; text-decoration-thickness: 3px;
