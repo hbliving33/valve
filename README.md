@@ -11,10 +11,13 @@ Website for valvepartners.com.  VALVE is the family: Vicki, Ayden, Lauren, Vince
 
 ## Logo
 
-- `assets/logo/valve-partners-stacked.svg`: main logo (handwheel over the wordmark)
-- `assets/logo/valve-partners-horizontal.svg`: wide version for headers and letterhead
-- `assets/logo/valve-wheel.svg`: the wheel by itself (also the site icon)
-- `assets/logo/concepts/`: the two alternate concepts
+Chosen logo: "Under One Roof" in Gold on Navy (option H4).  Colors: navy #1B1F3B, soft blues #E9EEF6 #C8D4E6 #A6B9D6 #86A0C6, white, gold #C9A227.
+
+- `assets/logo/valve-partners.svg`: main logo, gold on navy
+- `assets/logo/valve-partners-light.svg`: version for white backgrounds
+- `assets/logo/valve-partners-wide.svg`: wide version for headers and letterhead
+- `assets/logo/valve-partners-icon.svg`: icon (site icon and profile pictures)
+- `assets/logo/options/`: every option from all rounds
 
 ## Custom domain
 

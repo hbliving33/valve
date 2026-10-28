@@ -10,35 +10,22 @@ document.addEventListener("click", (e) => {
   if (topic) topic.value = link.dataset.topic;
 });
 
-// The wheel: choose a letter and the wheel turns that partner to the top.
-const wheel = document.getElementById("wheel");
+// The logo: choose a figure (or a name) and that partner's story appears.
+const mark = document.getElementById("mark");
 const panel = document.getElementById("panel");
-if (wheel && panel) {
-  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  let rot = 0;
-  const setRot = (deg) => wheel.style.setProperty("--rot", `${deg}deg`);
+if (mark && panel) {
+  const figs = [...mark.querySelectorAll(".fig")];
+  const names = [...document.querySelectorAll(".who button")];
 
-  // Opening turn on load, like opening a valve.
-  if (!reduce) {
-    setRot(-72);
-    wheel.getBoundingClientRect();
-    requestAnimationFrame(() => { wheel.classList.add("ready"); setRot(0); });
-  } else {
-    wheel.classList.add("ready");
-  }
-
-  const choose = (med) => {
-    const i = Number(med.dataset.index);
-    let delta = (-i * 72 - rot) % 360;
-    if (delta > 180) delta -= 360;
-    if (delta < -180) delta += 360;
-    rot += delta;
-    setRot(rot);
-    wheel.querySelectorAll(".med").forEach((m) => {
-      m.classList.toggle("active", m === med);
-      m.setAttribute("aria-pressed", m === med ? "true" : "false");
+  const choose = (person) => {
+    mark.classList.add("choosing");
+    figs.forEach((f) => {
+      const on = f.dataset.person === person;
+      f.classList.toggle("active", on);
+      f.setAttribute("aria-pressed", on ? "true" : "false");
     });
-    const tpl = document.getElementById(`t-${med.dataset.person}`);
+    names.forEach((b) => b.setAttribute("aria-pressed", b.dataset.person === person ? "true" : "false"));
+    const tpl = document.getElementById(`t-${person}`);
     panel.innerHTML = "";
     panel.appendChild(tpl.content.cloneNode(true));
     panel.removeAttribute("data-show");
@@ -46,12 +33,16 @@ if (wheel && panel) {
     panel.setAttribute("data-show", "");
   };
 
-  wheel.querySelectorAll(".med").forEach((med) => {
-    med.setAttribute("aria-pressed", "false");
-    med.addEventListener("click", () => choose(med));
-    med.addEventListener("keydown", (e) => {
-      if (e.key === "Enter" || e.key === " ") { e.preventDefault(); choose(med); }
+  figs.forEach((f) => {
+    f.setAttribute("aria-pressed", "false");
+    f.addEventListener("click", () => choose(f.dataset.person));
+    f.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" || e.key === " ") { e.preventDefault(); choose(f.dataset.person); }
     });
+  });
+  names.forEach((b) => {
+    b.setAttribute("aria-pressed", "false");
+    b.addEventListener("click", () => choose(b.dataset.person));
   });
 }
 
