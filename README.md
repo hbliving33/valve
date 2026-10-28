@@ -1,6 +1,6 @@
 # Valve Partners
 
-Website for valvepartners.com.  VALVE is the family: Vicki, Ayden, Lauren, Vincent and Eric.
+Website for valvepartners.com.  VALVE is the family: Vincent, Ayden, Lauren, Vicki and Eric.
 
 ## Pages
 
