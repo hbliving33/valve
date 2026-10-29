@@ -1,13 +1,15 @@
 // Valve Partners site script
-// Contact forms save to the Supabase project "valve-partners" and email a copy through FormSubmit.
+// Contact forms save to the Supabase project "valve-partners" and email a copy through Web3Forms.
 const SB_URL = "https://mefvxxoytleyfjbwtxix.supabase.co";
 const SB_KEY = "sb_publishable_Ex6vMImvvkTdQsFYprve7g_awiuqxEs";   // public key: can only add form entries and count visits
 
-// Where each form's email goes.  Change an address here to route that form somewhere else.
-const MAIL_TO = {
-  valve: "[email removed]",    // home page form
-  ayden: "[email removed]",    // Ayden's tutoring page
-  lauren: "[email removed]",   // Lauren's page
+// Where each form's email goes.  Each Web3Forms access key is tied to one inbox; the key below sends to [email removed].
+// To route a form somewhere else, create a Web3Forms key for that address and put it here.
+const ERIC_KEY = "b88fef65-1434-4f2b-8b2d-9b9cb760e7f0";   // [email removed] (public by design; it can only send to that address)
+const MAIL_KEY = {
+  valve: ERIC_KEY,    // home page form (also used for Vicki and Vincent)
+  ayden: ERIC_KEY,    // Ayden's tutoring page
+  lauren: ERIC_KEY,   // Lauren's page
 };
 
 // Links like "Talk to Vicki" jump to the form with that person picked.
@@ -86,11 +88,11 @@ if (form) {
       headers: { apikey: SB_KEY, "Content-Type": "application/json", Prefer: "return=minimal" },
       body: JSON.stringify(row),
     }).then((r) => r.ok).catch(() => false);
-    const mail = fetch(`https://formsubmit.co/ajax/${MAIL_TO[site] || MAIL_TO.valve}`, {
+    const mail = fetch("https://api.web3forms.com/submit", {
       method: "POST",
       headers: { "Content-Type": "application/json", Accept: "application/json" },
-      body: JSON.stringify({ _subject: `Valve Partners website: message for ${topic}`, _template: "table", _captcha: "false",
-        Name: name, Email: email, _replyto: email, For: topic, Message: message, Page: location.pathname }),
+      body: JSON.stringify({ access_key: MAIL_KEY[site] || MAIL_KEY.valve, subject: `Valve Partners website: message for ${topic}`, from_name: "Valve Partners website",
+        replyto: email, Name: name, Email: email, For: topic, Message: message, Page: location.pathname }),
     }).then((r) => r.ok).catch(() => false);
 
     const [a, b] = await Promise.all([db, mail]);
