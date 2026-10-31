@@ -3,9 +3,9 @@
 const SB_URL = "https://mefvxxoytleyfjbwtxix.supabase.co";
 const SB_KEY = "sb_publishable_Ex6vMImvvkTdQsFYprve7g_awiuqxEs";   // public key: can only add form entries and count visits
 
-// Where each form's email goes.  Each Web3Forms access key is tied to one inbox; the key below sends to [email removed].
+// Where each form's email goes.  Each Web3Forms access key is tied to one inbox; the key below sends to Eric's inbox.
 // To route a form somewhere else, create a Web3Forms key for that address and put it here.
-const ERIC_KEY = "b88fef65-1434-4f2b-8b2d-9b9cb760e7f0";   // [email removed] (public by design; it can only send to that address)
+const ERIC_KEY = "b88fef65-1434-4f2b-8b2d-9b9cb760e7f0";   // Eric's inbox (public by design; it can only send to that address)
 const MAIL_KEY = {
   valve: ERIC_KEY,    // home page form (also used for Vicki and Vincent)
   ayden: ERIC_KEY,    // Ayden's tutoring page
