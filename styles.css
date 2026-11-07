@@ -314,6 +314,8 @@ textarea { min-height: 8rem; resize: vertical; }
   border: 3px solid var(--gold); color: var(--gold-bright);
   font-family: var(--display); font-weight: 800; font-size: clamp(4.5rem, 9vw, 6.5rem); line-height: 1;
 }
+.page-logo { border: 0; border-radius: 0; aspect-ratio: auto; width: clamp(10rem, 19vw, 14rem); }
+.page-logo svg { display: block; width: 100%; height: auto; }
 .gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(14rem, 24rem)); gap: 1rem; margin-top: 1.4rem; }
 .gallery img { width: 100%; height: auto; aspect-ratio: 1 / 1; object-fit: cover; border-radius: 8px; }
 .gallery:empty { display: none; }
