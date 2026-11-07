@@ -3,15 +3,15 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Vicki: Staffing Services | Valve Partners</title>
-<meta name="description" content="Staffing services with Vicki, part of Valve Partners: forty years as a sales executive in the staffing industry, with contacts all over the country.">
+<title>Contact | Valve Partners</title>
+<meta name="description" content="Contact Valve Partners: Vincent, Ayden, Lauren, Vicki or Eric.">
 <link rel="icon" href="assets/logo/valve-partners-icon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&family=Manrope:wght@400;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css?v=96c7c3a2">
+<link rel="stylesheet" href="styles.css?v=b5c5d9f4">
 </head>
-<body class="c-vicki">
+<body>
 
 <header class="site-header">
   <div class="wrap">
@@ -20,33 +20,39 @@
     </a>
     <nav class="site-nav" aria-label="Main">
       <a href="index.html#partners">Partners</a>
-      <a href="values.html" class="hide-sm">Values</a>
-      <a href="#contact">Contact Vicki</a>
+      <a href="values.html">Values</a>
+      <a href="contact.html" aria-current="page">Contact</a>
     </nav>
   </div>
 </header>
 
 <main>
-  <section class="page-hero">
-    <div class="wrap page-hero-grid">
-      <div>
-        <h1>Staffing services</h1>
-        <p>I'm Vicki.  I spent forty years as a sales executive in the staffing industry, and I have contacts all over the country.  If you need people, or the right person, I know who to call.</p>
-        <a class="button" href="#contact">Talk to Vicki</a>
-      </div>
-      <div class="page-letter" aria-hidden="true">V</div>
-    </div>
-  </section>
-
-  <section class="contact" id="contact">
+  <section class="contact contact-page" id="contact">
     <div class="wrap">
       <div>
-        <h2>Contact Vicki</h2>
-        <p>Tell me who you're looking for, or what kind of help you need, and I'll get back to you.</p>
+        <h1 id="c-title">Get in touch</h1>
+        <p id="c-intro">Tell us what you need and who you'd like to reach.  We'll get your message to the right person.</p>
       </div>
-      <form id="contact-form" data-site="vicki" novalidate>
+      <form id="contact-form" data-site="valve" data-smart novalidate>
         <input type="text" name="_honey" tabindex="-1" autocomplete="off" class="honey" aria-hidden="true">
-        <input type="hidden" name="topic" value="Vicki (staffing)">
+        <input type="hidden" name="topic" value="Anyone">
+        <p class="sending-to" id="sending-to" hidden>Sending to <strong id="sending-name"></strong>.  <button type="button" class="change" id="change-person">Change</button></p>
+        <label id="who-label">Who would you like to reach?
+          <select name="to" id="to">
+            <option value="anyone">Not sure, anyone</option>
+            <option value="vincent">Vincent, TopFlight Services</option>
+            <option value="ayden">Ayden, Tutoring</option>
+            <option value="lauren">Lauren, Sourdough Bread or Soccer Training</option>
+            <option value="vicki">Vicki, Staffing Services</option>
+            <option value="eric">Eric, IT Consulting</option>
+          </select>
+        </label>
+        <label id="about-label" hidden>What's it about?
+          <select name="about" id="about">
+            <option value="sourdough">Sourdough bread order</option>
+            <option value="soccer">Soccer training</option>
+          </select>
+        </label>
         <label>Your name
           <input name="name" autocomplete="name" required>
         </label>
@@ -54,7 +60,7 @@
           <input name="email" type="email" autocomplete="email" required>
         </label>
         <label>Message
-          <textarea name="message" required></textarea>
+          <textarea name="message" id="message" required></textarea>
         </label>
         <button class="button" type="submit">Send message</button>
         <p class="form-status" id="form-status" role="status"></p>
@@ -72,6 +78,7 @@
     <nav class="footer-nav" aria-label="Footer">
       <a href="index.html#partners">Partners</a>
       <a href="values.html">Values</a>
+      <a href="contact.html">Contact</a>
     </nav>
   </div>
   <div class="wrap footer-bottom">
@@ -79,6 +86,6 @@
   </div>
 </footer>
 
-<script src="script.js?v=35846422"></script>
+<script src="script.js?v=9e156530"></script>
 </body>
 </html>

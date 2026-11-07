@@ -3,23 +3,80 @@
 const SB_URL = "https://mefvxxoytleyfjbwtxix.supabase.co";
 const SB_KEY = "sb_publishable_Ex6vMImvvkTdQsFYprve7g_awiuqxEs";   // public key: can only add form entries and count visits
 
-// Where each form's email goes.  Each Web3Forms access key is tied to one inbox; the key below sends to Eric's inbox.
-// To route a form somewhere else, create a Web3Forms key for that address and put it here.
+// Where each person's messages are emailed.  Each Web3Forms access key is tied to one inbox; right now every key is Eric's.
+// To send someone's messages to their own inbox, create a Web3Forms key for their address and put it on their line.
 const ERIC_KEY = "b88fef65-1434-4f2b-8b2d-9b9cb760e7f0";   // Eric's inbox (public by design; it can only send to that address)
 const MAIL_KEY = {
-  valve: ERIC_KEY,    // fallback (the home page no longer has a form)
-  vicki: ERIC_KEY,    // Vicki's staffing page
-  ayden: ERIC_KEY,    // Ayden's tutoring page
-  lauren: ERIC_KEY,   // Lauren's page
+  valve: ERIC_KEY,     // "Not sure, anyone"
+  vincent: ERIC_KEY,
+  ayden: ERIC_KEY,
+  lauren: ERIC_KEY,
+  vicki: ERIC_KEY,
+  eric: ERIC_KEY,
 };
 
-// Links like "Talk to Vicki" jump to the form with that person picked.
-document.addEventListener("click", (e) => {
-  const link = e.target.closest("[data-topic]");
-  if (!link) return;
-  const topic = document.getElementById("topic");
-  if (topic) topic.value = link.dataset.topic;
-});
+// The one contact form (contact.html).  Every "Contact Vicki" style link opens it as contact.html?to=vicki,
+// so the person is already picked and the visitor never touches the drop-down.  Lauren's links can add &about=sourdough or &about=soccer.
+const PEOPLE = {
+  anyone:  { name: "",        site: "valve",   title: "Get in touch",   intro: "Tell us what you need and who you'd like to reach.  We'll get your message to the right person." },
+  vincent: { name: "Vincent", site: "vincent", title: "Contact Vincent", intro: "Tell Vincent what you need and he'll put together a quote." },
+  ayden:   { name: "Ayden",   site: "ayden",   title: "Contact Ayden",   intro: "Send Ayden a note with the student's grade and what they need help with, and he'll get back to you.", hint: "Student's grade, subject and what they need help with" },
+  lauren:  { name: "Lauren",  site: "lauren",  title: "Contact Lauren",  intro: "Tell Lauren whether it's about sourdough bread or soccer training, and she'll get back to you." },
+  vicki:   { name: "Vicki",   site: "vicki",   title: "Contact Vicki",   intro: "Tell Vicki who you're looking for, or what kind of help you need, and she'll get back to you." },
+  eric:    { name: "Eric",    site: "eric",    title: "Contact Eric",    intro: "Tell Eric what you need help with, and he'll get back to you." },
+};
+const LAUREN_HINT = { sourdough: "How many loaves you'd like and when you need them", soccer: "Your player's age and what they want to work on" };
+
+const smart = document.querySelector("form[data-smart]");
+if (smart) {
+  const q = new URLSearchParams(location.search);
+  const to = smart.querySelector("#to");
+  const about = smart.querySelector("#about");
+  const aboutLabel = smart.querySelector("#about-label");
+  const whoLabel = smart.querySelector("#who-label");
+  const sendingTo = smart.querySelector("#sending-to");
+  const topic = smart.querySelector("input[name=topic]");
+  const message = smart.querySelector("#message");
+
+  const update = () => {
+    const key = PEOPLE[to.value] ? to.value : "anyone";
+    const p = PEOPLE[key];
+    const isLauren = key === "lauren";
+    aboutLabel.hidden = !isLauren;
+    smart.dataset.site = p.site;
+    topic.value = isLauren ? `Lauren (${about.value === "soccer" ? "soccer training" : "sourdough"})` : (p.name || "Anyone");
+    document.getElementById("c-title").textContent = p.title;
+    document.getElementById("c-intro").textContent = p.intro;
+    document.getElementById("sending-name").textContent = p.name;
+    message.placeholder = isLauren ? LAUREN_HINT[about.value] : (p.hint || "");
+    document.title = `${p.title} | Valve Partners`;
+    const url = new URL(location.href);
+    if (key === "anyone") url.searchParams.delete("to"); else url.searchParams.set("to", key);
+    if (isLauren) url.searchParams.set("about", about.value); else url.searchParams.delete("about");
+    history.replaceState(null, "", url);
+  };
+
+  const picked = (q.get("to") || "").toLowerCase();
+  if (PEOPLE[picked] && picked !== "anyone") {
+    to.value = picked;
+    whoLabel.hidden = true;          // already picked from their link: show "Sending to Vicki" instead of the drop-down
+    sendingTo.hidden = false;
+  }
+  if (q.get("about") === "soccer") about.value = "soccer";
+  smart.querySelector("#change-person").addEventListener("click", () => {
+    sendingTo.hidden = true; whoLabel.hidden = false; to.focus();
+  });
+  to.addEventListener("change", update);
+  about.addEventListener("change", update);
+  update();
+
+  // Someone who has sent a message before gets their name and email filled in (kept in their own browser only).
+  try {
+    const saved = JSON.parse(localStorage.getItem("valve-contact") || "{}");
+    if (saved.name) smart.querySelector("input[name=name]").value = saved.name;
+    if (saved.email) smart.querySelector("input[name=email]").value = saved.email;
+  } catch (e) {}
+}
 
 // The logo: choose a figure (or a name) and that partner's story appears.
 // The figures sway gently, a name you point at stands up, and the one you pick does a little groove
@@ -85,9 +142,9 @@ document.querySelectorAll("[data-stage]").forEach((stage) => {
 const form = document.getElementById("contact-form");
 if (form) {
   const status = document.getElementById("form-status");
-  const site = form.dataset.site || "valve";
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
+    const site = form.dataset.site || "valve";
     const data = new FormData(form);
     const name = (data.get("name") || "").trim();
     const email = (data.get("email") || "").trim();
@@ -108,7 +165,8 @@ if (form) {
     send.disabled = true; send.textContent = "Sending...";
     status.textContent = "";
 
-    const row = { site, name, email, topic, message, page: location.pathname };
+    const dbSite = ["ayden", "lauren"].includes(site) ? site : "valve";   // the database keeps its original labels; the topic says who it's for
+    const row = { site: dbSite, name, email, topic, message, page: location.pathname };
     const db = fetch(`${SB_URL}/rest/v1/contact_requests`, {
       method: "POST",
       headers: { apikey: SB_KEY, "Content-Type": "application/json", Prefer: "return=minimal" },
@@ -124,7 +182,10 @@ if (form) {
     const [a, b] = await Promise.all([db, mail]);
     send.disabled = false; send.textContent = "Send message";
     if (a || b) {
+      try { localStorage.setItem("valve-contact", JSON.stringify({ name, email })); } catch (e) {}
+      const keep = form.querySelector("#to") ? [form.querySelector("#to").value, form.querySelector("#about").value] : null;
       form.reset();
+      if (keep) { form.querySelector("#to").value = keep[0]; form.querySelector("#about").value = keep[1]; form.querySelector("input[name=name]").value = name; form.querySelector("input[name=email]").value = email; }
       status.textContent = "Thanks.  Your message was sent, and we'll get back to you soon.";
     } else {
       status.textContent = "Sorry, the message didn't go through.  Please try again in a minute.";

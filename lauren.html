@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&family=Manrope:wght@400;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css?v=96c7c3a2">
+<link rel="stylesheet" href="styles.css?v=b5c5d9f4">
 </head>
 <body class="c-lauren">
 
@@ -22,7 +22,7 @@
     <nav class="site-nav" aria-label="Main">
       <a href="index.html#partners">Partners</a>
       <a href="values.html" class="hide-sm">Values</a>
-      <a href="#contact">Contact Lauren</a>
+      <a href="contact.html?to=lauren">Contact Lauren</a>
     </nav>
   </div>
 </header>
@@ -33,7 +33,7 @@
       <div>
         <h1>Sourdough bread and soccer training</h1>
         <p>I'm Lauren, a mother of two.  I bake sourdough bread to order, and I train young soccer players ages 3 to 8.  Two very different passions, both done with care.</p>
-        <a class="button" href="#contact">Get in touch</a>
+        <a class="button" href="contact.html?to=lauren">Contact Lauren</a>
       </div>
       <div class="page-letter" aria-hidden="true">L</div>
     </div>
@@ -43,42 +43,16 @@
     <section id="bread">
       <h2>Sourdough bread</h2>
       <p>Sourdough bread, baked fresh to order.  Send me a note with how many loaves you'd like and when you need them.</p>
+      <p><a class="link" href="contact.html?to=lauren&amp;about=sourdough">Order sourdough bread</a></p>
       <div class="gallery" id="gallery"></div>
     </section>
     <section id="soccer">
       <h2>Soccer training</h2>
       <p>Soccer training for kids ages 3 to 8, with a coach who's great with little ones.  Send me a note with your player's age and what they want to work on.</p>
+      <p><a class="link" href="contact.html?to=lauren&amp;about=soccer">Ask about soccer training</a></p>
     </section>
   </div>
 
-  <section class="contact" id="contact">
-    <div class="wrap">
-      <div>
-        <h2>Contact Lauren</h2>
-        <p>Tell me whether it's about sourdough bread or soccer training, and I'll get back to you.</p>
-      </div>
-      <form id="contact-form" data-site="lauren" novalidate>
-        <input type="text" name="_honey" tabindex="-1" autocomplete="off" class="honey" aria-hidden="true">
-        <label>Your name
-          <input name="name" autocomplete="name" required>
-        </label>
-        <label>Your email
-          <input name="email" type="email" autocomplete="email" required>
-        </label>
-        <label>What's it about?
-          <select name="topic">
-            <option value="Lauren (sourdough)">Sourdough bread order</option>
-            <option value="Lauren (soccer training)">Soccer training</option>
-          </select>
-        </label>
-        <label>Message
-          <textarea name="message" required></textarea>
-        </label>
-        <button class="button" type="submit">Send message</button>
-        <p class="form-status" id="form-status" role="status"></p>
-      </form>
-    </div>
-  </section>
 </main>
 
 <footer class="site-footer">
@@ -90,6 +64,7 @@
     <nav class="footer-nav" aria-label="Footer">
       <a href="index.html#partners">Partners</a>
       <a href="values.html">Values</a>
+      <a href="contact.html">Contact</a>
     </nav>
   </div>
   <div class="wrap footer-bottom">
@@ -97,6 +72,6 @@
   </div>
 </footer>
 
-<script src="script.js?v=35846422"></script>
+<script src="script.js?v=9e156530"></script>
 </body>
 </html>
