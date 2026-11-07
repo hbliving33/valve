@@ -64,22 +64,93 @@ LAYOUTS = [
     ("Bright Idea", bulb, "A light bulb with the A inside: the moment it clicks."),
 ]
 
+
+# ---------- Round 2: the A, a detailed pencil through it, the book underneath ----------
+def bgc(c):
+    return NAVY if c["disc"] == "none" else c["disc"]
+
+def pencil_shape(c, x1, x2, y, ang):
+    """Detailed pencil from x1 (eraser end) to x2 (point), 22 tall, rotated ang degrees about the A's center."""
+    a, t_, bg = c["accent"], c["text"], bgc(c)
+    h = 22; top = y - h / 2
+    er, fe, tip, lead = 14, 12, 30, 9
+    body_x1, body_x2 = x1 + er + fe, x2 - tip
+    wood = "#F3E3B0"
+    parts = [
+        f'<rect x="{x1}" y="{top}" width="{er}" height="{h}" rx="4" fill="{a}" opacity="0.65"/>',                       # eraser
+        f'<rect x="{x1+er}" y="{top}" width="{fe}" height="{h}" fill="{t_}"/>',                                          # ferrule
+        f'<line x1="{x1+er+4}" y1="{top}" x2="{x1+er+4}" y2="{top+h}" stroke="{bg}" stroke-width="1.6"/>',
+        f'<line x1="{x1+er+8}" y1="{top}" x2="{x1+er+8}" y2="{top+h}" stroke="{bg}" stroke-width="1.6"/>',
+        f'<rect x="{body_x1}" y="{top}" width="{body_x2-body_x1}" height="{h}" fill="{a}"/>',                            # body
+        f'<line x1="{body_x1}" y1="{y-3.5}" x2="{body_x2}" y2="{y-3.5}" stroke="{bg}" stroke-width="1.4" opacity="0.55"/>',  # hex facets
+        f'<line x1="{body_x1}" y1="{y+3.5}" x2="{body_x2}" y2="{y+3.5}" stroke="{bg}" stroke-width="1.4" opacity="0.55"/>',
+        f'<polygon points="{body_x2},{top} {x2-lead},{y-3.2} {x2-lead},{y+3.2} {body_x2},{top+h}" fill="{wood}" opacity="0.92"/>',  # sharpened wood
+        f'<polygon points="{x2-lead},{y-3.2} {x2},{y} {x2-lead},{y+3.2}" fill="{t_}"/>',                                  # graphite
+    ]
+    outline = f'<rect x="{x1-3}" y="{top-3}" width="{x2-x1-tip+3}" height="{h+6}" rx="5" fill="{bg}"/>'
+    return f'<g transform="rotate({ang} 150 150)">{outline}{"".join(parts)}</g>'
+
+A_PATH = "M86 214 L150 72 L214 214"
+
+def big_a(c, w=30):
+    return f'<path d="{A_PATH}" fill="none" stroke="{c["text"]}" stroke-width="{w}" stroke-linejoin="miter" stroke-miterlimit="10"/>'
+
+def book2(c, solid=False, lines=False):
+    a, bg = c["accent"], bgc(c)
+    L = "M58 222 Q104 204 150 222 V262 Q104 244 58 262 Z"
+    R = "M242 222 Q196 204 150 222 V262 Q196 244 242 262 Z"
+    if solid:
+        g = f'<path d="{L}" fill="{a}"/><path d="{R}" fill="{a}"/><line x1="150" y1="222" x2="150" y2="262" stroke="{bg}" stroke-width="3"/>'
+    else:
+        g = (f'<path d="{L}" fill="{bg}" stroke="{a}" stroke-width="6" stroke-linejoin="round"/>'
+             f'<path d="{R}" fill="{bg}" stroke="{a}" stroke-width="6" stroke-linejoin="round"/>')
+    if lines:
+        col = bg if solid else a
+        for i, dy in enumerate((12, 22)):
+            g += (f'<path d="M72 {222+dy-4} Q108 {208+dy-4} 140 {222+dy}" fill="none" stroke="{col}" stroke-width="2.2" opacity="0.8"/>'
+                  f'<path d="M228 {222+dy-4} Q192 {208+dy-4} 160 {222+dy}" fill="none" stroke="{col}" stroke-width="2.2" opacity="0.8"/>')
+    return g
+
+def combo(ang, woven, solid, lines):
+    def draw(c):
+        g = book2(c, solid, lines) + big_a(c) + pencil_shape(c, 48, 252, 158, ang)
+        if woven:   # pencil passes behind the right leg: redraw that leg over it
+            g += (f'<clipPath id="wv"><rect x="150" y="120" width="120" height="80"/></clipPath>'
+                  f'<path d="{A_PATH}" fill="none" stroke="{c["text"]}" stroke-width="30" stroke-linejoin="miter" clip-path="url(#wv)"/>')
+        return g
+    return draw
+
+COMBOS = [
+    ("Level Pencil", combo(0, False, False, False), "A level pencil as the crossbar, the A standing on an open book."),
+    ("Tilted Pencil", combo(-12, False, False, False), "The pencil tilted up toward its point, over an open book."),
+    ("Woven Pencil", combo(-12, True, False, False), "The pencil goes through the A: over the left leg, behind the right."),
+    ("Solid Book", combo(0, False, True, True), "A level pencil over a solid book with page lines."),
+    ("Woven, Solid Book", combo(-12, True, True, True), "The woven pencil with the solid book underneath."),
+]
+
 def svg(layout, c, n):
     ring = f'<circle cx="150" cy="150" r="136" fill="{c["disc"]}" stroke="{c["ring"]}" stroke-width="6"/>'
     if c["ring2"]:
         ring += f'<circle cx="150" cy="150" r="124" fill="none" stroke="{c["ring2"]}" stroke-width="2"/>'
     clip = f'<clipPath id="ac{n}"><circle cx="150" cy="150" r="131"/></clipPath>'
     return (f'<svg viewBox="0 0 300 350" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Ayden tutoring logo option {n}">'
-            f'<defs>{clip}</defs>{ring}<g clip-path="url(#ac{n})">{layout(c)}</g>{t(150, 330, TAG, 24, c["tag"], ls=5)}</svg>')
+            f'<defs>{clip}</defs>{ring}<g clip-path="url(#ac{n})">{layout(c).replace('id="wv"', f'id="wv{n}"').replace('url(#wv)', f'url(#wv{n})')}</g>{t(150, 330, TAG, 24, c["tag"], ls=5)}</svg>')
 
-cards, n = [], 0
+def card(n, lname, c, desc, fn):
+    return f'''        <figure class="logo-card hilo-card">
+          <div class="hilo-tile">{svg(fn, c, n)}</div>
+          <figcaption><strong>{n}. {lname}, {c["name"]}</strong><span>{desc}</span></figcaption>
+        </figure>'''
+
+combo_cards, cards, n = [], [], 0
+for lname, fn, desc in COMBOS:
+    for c in SCHEMES:
+        n += 1
+        combo_cards.append(card(n, lname, c, desc, fn))
 for lname, fn, desc in LAYOUTS:
     for c in SCHEMES:
         n += 1
-        cards.append(f'''        <figure class="logo-card hilo-card">
-          <div class="hilo-tile">{svg(fn, c, n)}</div>
-          <figcaption><strong>{n}. {lname}, {c["name"]}</strong><span>{desc}</span></figcaption>
-        </figure>''')
+        cards.append(card(n, lname, c, desc, fn))
 
 page = (ROOT / "lauren-logos.html").read_text()
 head, foot = page.split("<main>")[0], "<footer" + page.split("<footer", 1)[1]
@@ -89,11 +160,20 @@ html = head + f'''<main>
   <section class="page-hero">
     <div class="wrap">
       <h1>Ayden Logo Options</h1>
-      <p>For the round badge on Ayden's tutoring page, in the same gold and navy as Lauren's.  Shown on navy, the way they'll sit on his page.  Pick by number.</p>
+      <p>For the round badge on Ayden's tutoring page, in the same gold and navy as Lauren's.  Newest round first.  Shown on navy, the way they'll sit on his page.  Pick by number.</p>
     </div>
   </section>
   <div class="wrap">
     <section class="logo-theme">
+      <h2>Round 2: A, Pencil and Book</h2>
+      <p>The big A with a detailed pencil through it as the crossbar, standing on an open book.</p>
+      <div class="logo-grid">
+{chr(10).join(combo_cards)}
+      </div>
+    </section>
+    <section class="logo-theme">
+      <h2>Round 1</h2>
+      <p>The first ideas, for reference.</p>
       <div class="logo-grid">
 {chr(10).join(cards)}
       </div>
