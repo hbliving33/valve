@@ -360,6 +360,8 @@ textarea { min-height: 8rem; resize: vertical; }
 .logo-card figcaption strong { display: block; color: var(--ink); font-weight: 700; font-size: 1rem; }
 .logo-card figcaption span { display: block; }
 .logo-card .now { display: inline-block; color: var(--navy); font-weight: 700; margin: 0.15rem 0; }
+.hilo-tile { background: var(--navy); border-radius: 8px; padding: 1.4rem 1.6rem 1.1rem; }
+.hilo-tile svg { display: block; width: 100%; height: auto; }
 .logo-card.current img { border: 2px solid var(--gold); }
 .logo-theme { padding-top: clamp(2rem, 5vw, 3rem); border-bottom: 1px solid var(--rule); }
 .logo-theme h2 { font-family: var(--display); font-weight: 800; font-size: clamp(1.5rem, 3vw, 2rem); line-height: 1.15; margin: 0 0 0.3rem; }
