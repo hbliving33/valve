@@ -4,7 +4,9 @@ Website for valvepartners.com.  VALVE is the family: Vincent, Ayden, Lauren, Vic
 
 ## Pages
 
-- `index.html`: home page, the five partners, and the contact form
+- `index.html`: home page and the five partners (no form here; each partner has their own)
+- `vicki.html`: Vicki's staffing page and her contact form
+- `buttons.html`: button style options page, six numbered styles (not linked from the menu)
 - `tutoring.html`: Ayden's tutoring page (Humboldt County)
 - `values.html`: core values page
 - `logos.html`: logo options page (not linked from the menu)
@@ -27,6 +29,7 @@ The site runs at valvepartners.com (CNAME file).  DNS is in Cloudflare, set up t
 ## Settings to change
 
 - After changing `script.js` or `styles.css`, run `python3 stamp.py` so visitors get the new version right away.
-- Contact forms: each form saves to the Supabase project "valve-partners" (table `contact_requests`, labeled by `site`) and emails a copy through FormSubmit.  Email addresses per form are in `MAIL_TO` at the top of `script.js`.
+- Contact forms: each form saves to the Supabase project "valve-partners" (table `contact_requests`, labeled by `site`) and emails a copy through Web3Forms.  Which inbox each form emails is set in `MAIL_KEY` at the top of `script.js`.
+- Name button style on the home page: the `btn-N` class on `<body>` in `index.html` (1 to 6, see `buttons.html`).
 - Vincent's business link (TopFlight Services): his name and the link with `id="vincent-link"` in `index.html`
 

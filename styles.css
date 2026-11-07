@@ -66,17 +66,152 @@ a { color: inherit; }
 .mark.choosing .fig path, .mark.choosing .fig circle { fill: var(--navy-3); }
 .mark.choosing .fig:hover path, .mark.choosing .fig:hover circle { fill: var(--sky-4); }
 .mark.choosing .fig.active path, .mark.choosing .fig.active circle { fill: var(--gold); }
-.fig:hover path { transform: scaleY(1.03); }
 .fig:focus-visible path, .fig:focus-visible circle { stroke: var(--gold-bright); stroke-width: 4; }
 
-.who { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.4rem; margin: 0; padding: 0; list-style: none; }
-.who button {
-  font: inherit; font-size: 0.92rem; font-weight: 600; color: var(--sky-2);
-  background: transparent; border: 1px solid rgba(255,255,255,.18); border-radius: 999px;
-  padding: 0.35rem 0.9rem; cursor: pointer;
+/* The people move: a gentle sway all the time, stand up when pointed at, groove when picked */
+.fig { transform-box: fill-box; transform-origin: 50% 100%; transition: translate .25s ease; }
+.fig[data-index="0"] { --n: 0; }
+.fig[data-index="1"] { --n: 1; }
+.fig[data-index="2"] { --n: 2; }
+.fig[data-index="3"] { --n: 3; }
+.fig[data-index="4"] { --n: 4; }
+.mark:not(.wave) .fig { animation: sway 3.4s ease-in-out infinite; animation-delay: calc(var(--n) * -0.55s); }
+.fig:hover, .fig.peek { translate: 0 -9px; }
+.mark.wave .fig { animation: hop .55s ease calc(var(--d, 0) * 90ms) both; }
+.mark.wave .fig.active { animation: groove 1.15s ease both; }
+@keyframes sway { 0%, 100% { transform: translateY(0) rotate(0); } 50% { transform: translateY(-3px) rotate(0.6deg); } }
+@keyframes hop { 0%, 100% { transform: none; } 40% { transform: translateY(-12px); } 70% { transform: translateY(1px) scaleY(.97); } }
+@keyframes groove {
+  0% { transform: none; }
+  14% { transform: translateY(-14px) rotate(-9deg); }
+  28% { transform: translateY(0) rotate(0) scaleY(.94); }
+  42% { transform: translateY(-14px) rotate(9deg); }
+  56% { transform: translateY(0) rotate(0) scaleY(.94); }
+  72% { transform: translateY(-8px) rotate(-5deg) scaleY(1.04); }
+  86% { transform: translateY(0) rotate(3deg); }
+  100% { transform: none; }
 }
-.who button:hover { color: #fff; border-color: var(--sky-3); }
-.who button[aria-pressed="true"] { background: var(--gold); border-color: var(--gold); color: var(--navy); }
+@keyframes bump { 0% { transform: none; } 35% { transform: translateY(-4px) scale(1.06); } 70% { transform: translateY(1px) scale(.98); } 100% { transform: none; } }
+
+/* Name buttons under the logo.  Six styles: the home page uses the one named on <body class="btn-N">; buttons.html shows them all. */
+.who { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.5rem; margin: 0; padding: 0; list-style: none; }
+.who li:nth-child(1) button { --c: var(--sky-1); }
+.who li:nth-child(2) button { --c: var(--sky-2); }
+.who li:nth-child(3) button { --c: var(--sky-3); }
+.who li:nth-child(4) button { --c: var(--sky-4); }
+.who li:nth-child(5) button { --c: var(--gold); }
+.who button { font: inherit; cursor: pointer; position: relative; }
+.who button.bump { animation: bump .45s ease; }
+
+/* 1. Nameplates: squared plates with a color bar on top that runs full width */
+.btn-1 .who button {
+  font-size: 0.92rem; font-weight: 700; letter-spacing: 0.02em; color: var(--sky-1);
+  background: var(--navy-2); border: 1px solid rgba(255,255,255,.12); border-radius: 6px;
+  padding: 0.55rem 1rem; overflow: hidden; transition: background .2s, color .2s, box-shadow .2s, translate .2s;
+}
+.btn-1 .who button::before {
+  content: ""; position: absolute; inset: 0 0 auto 0; height: 3px; background: var(--c);
+  transform: scaleX(.3); transform-origin: left; transition: transform .3s ease;
+}
+.btn-1 .who button:hover { translate: 0 -2px; box-shadow: 0 8px 18px rgba(0,0,0,.35); color: #fff; }
+.btn-1 .who button:hover::before { transform: scaleX(1); }
+.btn-1 .who button[aria-pressed="true"] { background: var(--gold); color: var(--navy); border-color: var(--gold); }
+.btn-1 .who button[aria-pressed="true"]::before { background: var(--navy); transform: scaleX(1); }
+.btn-1 .panel .button { display: inline-flex; align-items: center; gap: 0.6rem; }
+.btn-1 .panel .button::after { content: "\2192"; transition: transform .2s ease; }
+.btn-1 .panel .button:hover::after { transform: translateX(5px); }
+
+/* 2. Underline tabs: no boxes, a gold line slides in under the name */
+.btn-2 .who { gap: 0.2rem 1.1rem; }
+.btn-2 .who button {
+  font-size: 1rem; font-weight: 600; color: var(--sky-2); background: none; border: 0; border-radius: 0; padding: 0.35rem 0.1rem;
+  transition: color .2s;
+}
+.btn-2 .who button::after {
+  content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 2px; background: var(--gold);
+  transform: scaleX(0); transform-origin: left; transition: transform .3s ease;
+}
+.btn-2 .who button:hover { color: #fff; }
+.btn-2 .who button:hover::after { transform: scaleX(1); }
+.btn-2 .who button[aria-pressed="true"] { color: #fff; font-weight: 800; }
+.btn-2 .who button[aria-pressed="true"]::after { transform: scaleX(1); height: 3px; }
+.btn-2 .panel .button {
+  background: linear-gradient(var(--gold), var(--gold)) no-repeat left / 0% 100%; color: var(--gold-bright);
+  border: 2px solid var(--gold); border-radius: 0; transition: background-size .35s ease, color .35s ease;
+}
+.btn-2 .panel .button:hover { background-size: 100% 100%; color: var(--navy); }
+
+/* 3. Letter blocks: each name sits under its VALVE letter, in that figure's color */
+.btn-3 .who button {
+  display: grid; justify-items: center; gap: 0.1rem; width: 4.6rem; padding: 0.45rem 0 0.5rem;
+  font-size: 0.78rem; font-weight: 700; color: var(--sky-2);
+  background: var(--navy-2); border: 1px solid rgba(255,255,255,.1); border-radius: 8px;
+  transition: translate .2s, border-color .2s, background .2s, color .2s;
+}
+.btn-3 .who button::before { font-family: var(--display); font-weight: 800; font-size: 1.55rem; line-height: 1; color: var(--c); }
+.btn-3 .who li:nth-child(1) button::before { content: "V"; }
+.btn-3 .who li:nth-child(2) button::before { content: "A"; }
+.btn-3 .who li:nth-child(3) button::before { content: "L"; }
+.btn-3 .who li:nth-child(4) button::before { content: "V"; }
+.btn-3 .who li:nth-child(5) button::before { content: "E"; }
+.btn-3 .who button:hover { translate: 0 -4px; border-color: var(--c); color: #fff; }
+.btn-3 .who button[aria-pressed="true"] { background: var(--c); border-color: var(--c); color: var(--navy); }
+.btn-3 .who button[aria-pressed="true"]::before { color: var(--navy); }
+.btn-3 .panel .button { position: relative; overflow: hidden; border-radius: 4px; }
+.btn-3 .panel .button::before {
+  content: ""; position: absolute; top: 0; bottom: 0; left: -60%; width: 40%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,.55), transparent); transform: skewX(-20deg);
+}
+.btn-3 .panel .button:hover::before { animation: shine .7s ease; }
+@keyframes shine { to { left: 130%; } }
+
+/* 4. Bar: the five names joined in one bar, the picked one lights up gold */
+.btn-4 .who { gap: 0; flex-wrap: nowrap; border: 1px solid rgba(255,255,255,.2); border-radius: 6px; overflow: hidden; }
+.btn-4 .who li + li button { border-left: 1px solid rgba(255,255,255,.2); }
+.btn-4 .who button {
+  font-size: 0.92rem; font-weight: 700; color: var(--sky-2); background: transparent; border: 0; border-radius: 0;
+  padding: 0.6rem 0.95rem; transition: background .2s, color .2s;
+}
+.btn-4 .who button:hover { background: var(--navy-3); color: #fff; }
+.btn-4 .who button[aria-pressed="true"] { background: var(--gold); color: var(--navy); }
+.btn-4 .panel .button {
+  border-radius: 0; padding-right: 1.9rem;
+  clip-path: polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 0 100%); transition: translate .2s, background .2s;
+}
+.btn-4 .panel .button:hover { translate: 3px 0; }
+
+/* 5. Press blocks: solid blocks with a gold shadow that press down when clicked */
+.btn-5 .who { gap: 0.7rem; }
+.btn-5 .who button {
+  font-size: 0.92rem; font-weight: 800; color: var(--navy); background: var(--sky-1); border: 0; border-radius: 4px;
+  padding: 0.5rem 0.95rem; box-shadow: 4px 4px 0 var(--gold); transition: translate .12s, box-shadow .12s, background .2s;
+}
+.btn-5 .who button:hover { translate: -1px -1px; box-shadow: 5px 5px 0 var(--gold); }
+.btn-5 .who button:active { translate: 3px 3px; box-shadow: 1px 1px 0 var(--gold); }
+.btn-5 .who button[aria-pressed="true"] { background: var(--gold); box-shadow: 4px 4px 0 var(--sky-1); }
+.btn-5 .panel .button { border-radius: 4px; box-shadow: 5px 5px 0 #fff; transition: translate .12s, box-shadow .12s, background .2s; }
+.btn-5 .panel .button:hover { translate: -1px -1px; box-shadow: 6px 6px 0 #fff; }
+.btn-5 .panel .button:active { translate: 4px 4px; box-shadow: 1px 1px 0 #fff; }
+
+/* 6. Color key: a bar over each name in that figure's color, so the buttons match the people */
+.btn-6 .who { gap: 0.3rem 0.9rem; }
+.btn-6 .who button {
+  font-size: 0.95rem; font-weight: 700; color: var(--sky-2); background: none; border: 0; border-radius: 0;
+  padding: 0.55rem 0.3rem 0.3rem; transition: color .2s;
+}
+.btn-6 .who button::before {
+  content: ""; position: absolute; left: 0; right: 0; top: 0; height: 4px; border-radius: 2px; background: var(--c);
+  opacity: .45; transition: opacity .2s, height .2s, top .2s;
+}
+.btn-6 .who button:hover { color: #fff; }
+.btn-6 .who button:hover::before { opacity: 1; }
+.btn-6 .who button[aria-pressed="true"] { color: #fff; }
+.btn-6 .who button[aria-pressed="true"]::before { opacity: 1; height: 7px; top: -3px; }
+.btn-6 .panel .button {
+  background: rgba(255,255,255,.07); color: #fff; border-radius: 0; border-left: 5px solid var(--gold);
+  transition: background .2s, color .2s;
+}
+.btn-6 .panel .button:hover { background: var(--gold); color: var(--navy); }
 
 .panel { min-height: 20rem; display: flex; flex-direction: column; justify-content: center; }
 .panel h1, .panel h2 {
@@ -94,10 +229,11 @@ a { color: inherit; }
 @media (prefers-reduced-motion: reduce) {
   .panel[data-show] { animation: none; }
   .fig path, .fig circle { transition: none; }
-  .fig:hover path { transform: none; }
+  .fig, .mark.wave .fig, .mark.wave .fig.active, .who button.bump { animation: none !important; }
+  .fig:hover, .fig.peek { translate: none; }
 }
 
-.button { display: inline-block; background: var(--gold); color: var(--navy); text-decoration: none; padding: 0.8rem 1.45rem; border-radius: 999px; border: 0; font: inherit; font-weight: 700; cursor: pointer; }
+.button { display: inline-block; background: var(--gold); color: var(--navy); text-decoration: none; padding: 0.8rem 1.45rem; border-radius: 6px; border: 0; font: inherit; font-weight: 700; cursor: pointer; }
 .button:hover { background: var(--gold-bright); }
 
 /* Partners */
@@ -198,7 +334,9 @@ textarea { min-height: 8rem; resize: vertical; }
   .mark { max-width: 17rem; }
   .panel { min-height: 0; }
   .site-nav { gap: 1rem; font-size: 0.9rem; }
-  .who button { padding: 0.3rem 0.7rem; font-size: 0.88rem; }
+  .btn-1 .who button, .btn-5 .who button { padding: 0.45rem 0.7rem; font-size: 0.88rem; }
+  .btn-3 .who button { width: 3.9rem; }
+  .btn-4 .who button { padding: 0.55rem 0.6rem; font-size: 0.84rem; }
   .brand-mark { width: 2.5rem; }
 }
 @media (max-width: 420px) {
@@ -244,3 +382,14 @@ textarea { min-height: 8rem; resize: vertical; }
 @media (max-width: 760px) { .value { grid-template-columns: 1fr; } }
 
 .honey { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
+
+/* Button options page */
+.opt { border-top: 1px solid var(--rule); }
+.opt-head { padding-block: clamp(1.6rem, 4vw, 2.4rem) 1.2rem; }
+.opt-head h2 { font-family: var(--display); font-weight: 800; font-size: clamp(1.5rem, 3vw, 2rem); line-height: 1.15; margin: 0 0 0.4rem; display: flex; flex-wrap: wrap; align-items: center; gap: 0.6rem; }
+.opt-head .num { display: inline-grid; place-items: center; width: 2.3rem; height: 2.3rem; border-radius: 6px; background: var(--navy); color: var(--gold-bright); font-size: 1.15rem; }
+.opt-head .live { font-family: var(--body); font-size: 0.85rem; font-weight: 700; color: var(--navy); background: var(--gold); padding: 0.2rem 0.6rem; border-radius: 4px; }
+.opt-head p { margin: 0; max-width: 46rem; color: var(--ink-soft); }
+.opt .hero { padding-block: clamp(1.8rem, 5vw, 3rem); }
+.opt .panel { min-height: 16rem; }
+.opt .panel h2 { font-size: clamp(2rem, 4.4vw, 3.2rem); }
