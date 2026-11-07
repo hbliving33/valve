@@ -292,10 +292,9 @@ a { color: inherit; }
 .partner p + .role { margin-top: 1.2rem; }
 .panel p + .role { margin-top: -0.2rem; }
 .partner .link {
-  display: inline-block; font-weight: 700; color: var(--navy);
-  text-decoration: underline; text-decoration-color: var(--gold); text-underline-offset: 0.35em; text-decoration-thickness: 3px;
+  display: inline-block; font-weight: 700; color: var(--navy); text-decoration: none;
 }
-.partner .link:hover { text-decoration-color: var(--navy); }
+.partner .link:hover { text-decoration: underline; text-decoration-color: var(--navy); text-underline-offset: 0.3em; text-decoration-thickness: 2px; }
 .partner .link + .link { margin-left: 1.6rem; }
 .split .link { font-weight: 700; color: var(--navy); text-decoration: underline; text-decoration-color: var(--gold); text-underline-offset: 0.35em; text-decoration-thickness: 3px; }
 .split .link:hover { text-decoration-color: var(--navy); }
