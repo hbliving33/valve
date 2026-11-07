@@ -117,6 +117,10 @@ a { color: inherit; }
 .btn-1 .who button:hover::before { transform: scaleX(1); }
 .btn-1 .who button[aria-pressed="true"] { background: var(--gold); color: var(--navy); border-color: var(--gold); }
 .btn-1 .who button[aria-pressed="true"]::before { background: var(--navy); transform: scaleX(1); }
+.btn-1 .who { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); width: 100%; max-width: 30rem; padding-inline: 7.3%; box-sizing: border-box; gap: 0.5rem; }
+.btn-1 .who li { display: flex; }
+.btn-1 .who button { width: 100%; padding-inline: 0.3rem; text-align: center; }
+.stage .brand-mark { display: none; }
 .btn-1 .panel .button { display: inline-flex; align-items: center; gap: 0.6rem; }
 .btn-1 .panel .button::after { content: "\2192"; transition: transform .2s ease; }
 .btn-1 .panel .button:hover::after { transform: translateX(5px); }
@@ -351,6 +355,8 @@ textarea { min-height: 8rem; resize: vertical; }
   .panel { min-height: 0; }
   .site-nav { gap: 1rem; font-size: 0.9rem; }
   .btn-1 .who button, .btn-5 .who button { padding: 0.45rem 0.7rem; font-size: 0.88rem; }
+  .btn-1 .who { max-width: none; padding-inline: 0; gap: 0.35rem; }
+  .btn-1 .who button { padding-inline: 0.15rem; font-size: 0.82rem; }
   .btn-3 .who button { width: 3.9rem; }
   .btn-4 .who button { padding: 0.55rem 0.6rem; font-size: 0.84rem; }
   .brand-mark { width: 2.9rem; }
