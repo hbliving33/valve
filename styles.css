@@ -39,10 +39,11 @@ a { color: inherit; }
 /* Header: navy on every page */
 .site-header { background: var(--navy); color: #fff; }
 .site-header .wrap { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding-block: 0.85rem; }
-.brand { display: flex; align-items: center; gap: 1rem; text-decoration: none; color: #fff; }
+.brand { display: flex; align-items: flex-end; gap: 1rem; text-decoration: none; color: #fff; }
 .brand-mark { width: 4.6rem; height: auto; flex-shrink: 0; }
-.brand-name { font-family: var(--display); font-weight: 800; font-size: 1.9rem; letter-spacing: 0.08em; line-height: 1; }
-.brand-name small { display: block; font-family: var(--body); font-weight: 600; font-size: 0.8rem; letter-spacing: 0.5em; color: var(--sky-2); margin-top: 0.4rem; }
+.brand-name { display: inline-flex; flex-direction: column; font-family: var(--display); font-weight: 800; font-size: 1.9rem; line-height: 0.8; }
+.brand-name .bn-top { letter-spacing: 0.08em; margin-right: -0.08em; }
+.brand-name small { display: flex; justify-content: space-between; font-family: var(--body); font-weight: 600; font-size: 0.8rem; letter-spacing: 0; line-height: 0.75; color: var(--sky-2); margin-top: 0.55rem; }
 .site-nav { display: flex; gap: 1.5rem; font-size: 0.95rem; }
 .site-nav a { text-decoration: none; color: var(--sky-2); white-space: nowrap; }
 .site-nav a:hover { color: #fff; text-decoration: underline; text-decoration-color: var(--gold); text-underline-offset: 0.35em; }
@@ -374,7 +375,7 @@ textarea { min-height: 8rem; resize: vertical; }
   .btn-4 .who button { padding: 0.55rem 0.6rem; font-size: 0.84rem; }
   .brand-mark { width: 2.9rem; }
   .brand { gap: 0.6rem; }
-  .brand-name small { letter-spacing: 0.32em; font-size: 0.66rem; }
+  .brand-name small { font-size: 0.66rem; margin-top: 0.4rem; }
 }
 @media (max-width: 420px) {
   .site-nav a.hide-sm { display: none; }
