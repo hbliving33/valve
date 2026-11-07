@@ -453,3 +453,5 @@ textarea { min-height: 8rem; resize: vertical; }
 .hdr-demo.d5 .brand-name small::before { background: linear-gradient(90deg, rgba(201,162,39,0), rgba(224,185,58,.9) 50%, rgba(201,162,39,0)); }
 .hdr-demo.d6 .brand-name small::before { background: linear-gradient(90deg, rgba(255,255,255,0), rgba(255,255,255,.55) 44%, rgba(255,255,255,0) 47%, rgba(255,255,255,0) 53%, rgba(255,255,255,.55) 56%, rgba(255,255,255,0)); }
 .hdr-demo.d6 .brand-name small::after { content: ""; position: absolute; left: 50%; top: calc(-0.5rem - 2px); width: 5px; height: 5px; margin-left: -2.5px; border-radius: 50%; background: var(--gold-bright); }
+.hdr-demo.d7 .brand-name small::before { height: 2px; top: -0.55rem; background: rgba(255,255,255,.8); }
+.hdr-demo.d8 .brand-name small::before { height: 2px; top: -0.55rem; background: linear-gradient(90deg, rgba(255,255,255,0), rgba(255,255,255,.8) 14%, rgba(255,255,255,.8) 86%, rgba(255,255,255,0)); }
