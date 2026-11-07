@@ -440,3 +440,16 @@ textarea { min-height: 8rem; resize: vertical; }
 .sending-to { margin: 0; padding: 0.8rem 1rem; background: #fff; border: 1px solid var(--rule); border-left: 5px solid var(--gold); border-radius: 6px; }
 .sending-to .change { font: inherit; font-weight: 700; color: var(--navy); background: none; border: 0; padding: 0; cursor: pointer; text-decoration: underline; text-decoration-color: var(--gold); text-underline-offset: 0.3em; }
 [hidden] { display: none !important; }
+
+/* Logos page: header divider options */
+.hdr-grid { grid-template-columns: repeat(auto-fill, minmax(19rem, 1fr)); }
+.hdr-tile { background: var(--navy); border-radius: 8px; padding: 2.2rem 1.5rem; display: grid; place-items: center; }
+.hdr-demo { pointer-events: none; }
+.hdr-demo:not(.d1) .brand-name small { position: relative; margin-top: 0.95rem; }
+.hdr-demo:not(.d1) .brand-name small::before { content: ""; position: absolute; left: 0; right: 0; top: -0.5rem; height: 1px; }
+.hdr-demo.d2 .brand-name small::before { background: linear-gradient(90deg, rgba(255,255,255,0), rgba(255,255,255,.6) 50%, rgba(255,255,255,0)); }
+.hdr-demo.d3 .brand-name small::before { background: linear-gradient(90deg, rgba(255,255,255,.6), rgba(255,255,255,0)); }
+.hdr-demo.d4 .brand-name small::before { left: 18%; right: 18%; background: linear-gradient(90deg, rgba(255,255,255,0), rgba(255,255,255,.65) 50%, rgba(255,255,255,0)); }
+.hdr-demo.d5 .brand-name small::before { background: linear-gradient(90deg, rgba(201,162,39,0), rgba(224,185,58,.9) 50%, rgba(201,162,39,0)); }
+.hdr-demo.d6 .brand-name small::before { background: linear-gradient(90deg, rgba(255,255,255,0), rgba(255,255,255,.55) 44%, rgba(255,255,255,0) 47%, rgba(255,255,255,0) 53%, rgba(255,255,255,.55) 56%, rgba(255,255,255,0)); }
+.hdr-demo.d6 .brand-name small::after { content: ""; position: absolute; left: 50%; top: calc(-0.5rem - 2px); width: 5px; height: 5px; margin-left: -2.5px; border-radius: 50%; background: var(--gold-bright); }
