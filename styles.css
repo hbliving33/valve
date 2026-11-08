@@ -54,7 +54,7 @@ a { color: inherit; }
 .stage { background: var(--navy); color: #fff; }
 .stage .site-header { border-bottom: 1px solid rgba(255,255,255,.07); }
 
-.hero { padding-block: clamp(2rem, 6vw, 4.5rem) clamp(2.5rem, 7vw, 5rem); }
+.hero { padding-block: clamp(1.25rem, 3vw, 2rem) clamp(1.75rem, 4vw, 3rem); }
 .hero .wrap { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: clamp(2rem, 6vw, 5rem); align-items: center; }
 .hero-mark { display: grid; gap: 1.2rem; justify-items: center; }
 
@@ -244,8 +244,8 @@ a { color: inherit; }
 .button:hover { background: var(--gold-bright); }
 
 /* Partners */
-.partners { padding-block: clamp(3rem, 7vw, 5.5rem); }
-.section-intro { max-width: 40rem; margin-bottom: clamp(2rem, 5vw, 3.5rem); }
+.partners { padding-block: clamp(2.25rem, 4.5vw, 3.5rem); }
+.section-intro { max-width: 40rem; margin-bottom: clamp(1.4rem, 3vw, 2rem); }
 .section-intro h2, .contact h2 {
   font-family: var(--display); font-weight: 800; font-size: clamp(1.9rem, 4.2vw, 2.8rem); line-height: 1.1; letter-spacing: -0.01em; margin: 0 0 0.8rem;
 }
@@ -303,7 +303,7 @@ a { color: inherit; }
 .split .link:hover { text-decoration-color: var(--navy); }
 
 /* Contact */
-.contact { background: var(--mist); color: var(--ink); padding-block: clamp(3rem, 7vw, 5rem); }
+.contact { background: var(--mist); color: var(--ink); padding-block: clamp(2.25rem, 4.5vw, 3.5rem); }
 .contact .wrap { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: clamp(2rem, 6vw, 4rem); }
 .contact p { color: var(--ink-soft); max-width: var(--measure); }
 form { display: grid; gap: 1rem; }
@@ -331,7 +331,8 @@ textarea { min-height: 8rem; resize: vertical; }
 .footer-bottom { border-top: 1px solid rgba(255,255,255,.08); padding-block: 1rem 1.4rem; font-size: 0.85rem; }
 
 /* Partner pages (Ayden, Lauren) */
-.page-hero { background: var(--navy); color: #fff; padding-block: clamp(2.5rem, 7vw, 4.5rem); }
+.page-hero { background: var(--navy); color: #fff; padding-block: clamp(1.75rem, 3.2vw, 2.25rem) clamp(2rem, 4.5vw, 3.25rem); }
+.page-hero p:last-child, .page-hero .button:last-child { margin-bottom: 0; }
 .page-hero .kicker { color: var(--gold-bright); font-weight: 700; margin: 0 0 0.6rem; }
 .page-hero h1 { font-family: var(--display); font-weight: 800; font-size: clamp(2.3rem, 5.6vw, 4rem); line-height: 1.05; letter-spacing: -0.015em; margin: 0 0 1.1rem; max-width: 18ch; }
 .page-hero p { max-width: var(--measure); color: var(--sky-2); font-size: 1.15rem; margin: 0 0 1.6rem; }
@@ -347,16 +348,18 @@ textarea { min-height: 8rem; resize: vertical; }
 .gallery img { width: 100%; height: auto; aspect-ratio: 1 / 1; object-fit: cover; border-radius: 8px; }
 .gallery:empty { display: none; }
 .split { grid-auto-rows: auto; }
-.split > section { display: grid; grid-row: span 4; grid-template-rows: subgrid; row-gap: 0; }
+.split-3 > section { display: grid; grid-row: span 4; grid-template-rows: subgrid; row-gap: 1.15rem; }
 .split > section > p:first-of-type { max-width: 24rem; text-wrap: pretty; }
-.split .gallery { margin-top: 0; padding-top: 1.4rem; }
-.split { padding-block: clamp(2.5rem, 6vw, 4.5rem); display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(2rem, 6vw, 5rem); }
+.split .gallery { margin-top: 0; padding-top: 1rem; }
+.split { padding-block: clamp(2rem, 4vw, 3rem); display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(2rem, 6vw, 5rem); }
 .split-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(2rem, 4vw, 3.5rem); }
-.split-3 { gap: 1.5rem; }
+.split-3 { gap: 1.25rem 1.5rem; }
 .split-3 h2.card-title { display: flex; align-items: center; gap: 0.85rem; }
 .split-3 .card-logo { width: 3.4rem; height: 3.4rem; flex: 0 0 auto; }
 .split-3 > section { grid-row: span 4; background: #fff; border: 1px solid var(--rule); border-top: 4px solid var(--gold); border-radius: 8px; padding: 1.6rem 1.6rem 1.6rem; }
 .split-3 > section > p:first-of-type { max-width: none; }
+.split-3 > section > h2, .split-3 > section > p { margin: 0; }
+.split-3 > section > .gallery { padding-top: 0; }
 .split-3 .gallery { grid-template-columns: 1fr; }
 .split-3 .link { text-decoration: none; }
 .split-3 .link:hover { text-decoration: underline; text-decoration-color: var(--navy); text-underline-offset: 0.3em; text-decoration-thickness: 2px; }
@@ -396,7 +399,7 @@ textarea { min-height: 8rem; resize: vertical; }
 }
 
 /* Logo options page */
-.logo-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr)); gap: 1.6rem 1.2rem; padding-block: clamp(2rem, 5vw, 3.5rem); }
+.logo-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr)); gap: 1.6rem 1.2rem; padding-block: clamp(1.75rem, 4vw, 2.75rem); }
 .logo-card { margin: 0; }
 .logo-card img { width: 100%; height: auto; border-radius: 8px; border: 1px solid var(--rule); }
 .logo-card a:hover img { border-color: var(--navy); }
@@ -413,10 +416,10 @@ textarea { min-height: 8rem; resize: vertical; }
 .logo-theme .logo-grid { padding-block: 1.4rem 2.4rem; }
 
 /* Values page */
-.values { padding-block: clamp(2.5rem, 6vw, 4.5rem); }
+.values { padding-block: clamp(2rem, 4vw, 3rem); }
 .value {
   display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: clamp(1rem, 5vw, 4rem);
-  padding-block: clamp(1.6rem, 4vw, 2.6rem); border-top: 1px solid var(--rule);
+  padding-block: clamp(1.25rem, 2.8vw, 1.9rem); border-top: 1px solid var(--rule);
 }
 .value:last-child { border-bottom: 1px solid var(--rule); }
 .value h2 {
@@ -424,7 +427,7 @@ textarea { min-height: 8rem; resize: vertical; }
   padding-left: 1rem; border-left: 5px solid var(--gold);
 }
 .value p { margin: 0; max-width: var(--measure); font-size: 1.1rem; color: var(--ink-soft); }
-.values-close { background: var(--mist); padding-block: clamp(2.5rem, 6vw, 3.5rem); }
+.values-close { background: var(--mist); padding-block: clamp(1.75rem, 3.5vw, 2.5rem); }
 .values-close .wrap { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem; }
 .values-close p { margin: 0; font-family: var(--display); font-weight: 800; font-size: clamp(1.3rem, 2.6vw, 1.7rem); }
 .values-close .button { background: var(--navy); color: #fff; }
@@ -448,7 +451,8 @@ textarea { min-height: 8rem; resize: vertical; }
 .opt .panel h2 { font-size: clamp(2rem, 4.4vw, 3.2rem); }
 
 /* Contact page (one smart form for everyone) */
-.contact-page { padding-block: clamp(2.5rem, 7vw, 4.5rem); min-height: 60vh; }
+.contact-page { padding-block: clamp(2rem, 4.5vw, 3.25rem) clamp(1.25rem, 2.5vw, 1.75rem); }
+.contact-page .contact-grid, .contact-page form { margin-bottom: 0; }
 .contact-page h1 { font-family: var(--display); font-weight: 800; font-size: clamp(2.1rem, 5vw, 3.2rem); line-height: 1.08; letter-spacing: -0.01em; margin: 0 0 0.8rem; }
 .sending-to { margin: 0; padding: 0.8rem 1rem; background: #fff; border: 1px solid var(--rule); border-left: 5px solid var(--gold); border-radius: 6px; }
 .sending-to .change { font: inherit; font-weight: 700; color: var(--navy); background: none; border: 0; padding: 0; cursor: pointer; text-decoration: underline; text-decoration-color: var(--gold); text-underline-offset: 0.3em; }
