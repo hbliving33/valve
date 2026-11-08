@@ -52,7 +52,8 @@ def L5(c):  # plus divider with an open center, HI top left, LO bottom right
 def L6(c):  # the circle splits in two: top half solid, bottom half open
     top = half(c["cross"], "M0 150 H300 V0 H0 Z")
     on_top = NAVY if c["cross"] != NAVY else GOLDB
-    return top + t(150, 128, "HI", 72, on_top, ls=6) + t(150, 230, "LO", 72, c["text"], ls=6)
+    return (top + f'<text x="156" y="126" text-anchor="middle" font-family="{FONT}" font-weight="800" font-size="72" letter-spacing="12" fill="{on_top}" stroke="{on_top}" stroke-width="2.6" stroke-linejoin="round" paint-order="stroke">HI</text>'
+            + t(153, 226, "LO", 72, c["text"], ls=6))
 
 LAYOUTS = [
     ("Quadrants", L1, "A plus-shaped divider splits the circle.  HI sits up high, LO sits down low."),

@@ -168,10 +168,15 @@ def base(c, lo_text=True):
     g = f'<path d="M0 150 H300 V0 H0 Z" fill="{c["top"]}"/>'
     if c.get("bottom"):
         g += f'<path d="M0 150 H300 V300 H0 Z" fill="{c["bottom"]}"/>'
-    g += t(150, 128, "HI", 72, c["hi"], ls=6)
+    g += hi_text(c["hi"])
     if lo_text:
-        g += t(150, 230, "LO", 72, c["lo"], ls=6)
+        g += t(153, 226, "LO", 72, c["lo"], ls=6)
     return g
+
+def hi_text(color):
+    """HI balanced against LO: same height, a touch wider, same visual weight, same distance from the center line."""
+    return (f'<text x="156" y="126" text-anchor="middle" font-family="{FONT}" font-weight="800" font-size="72" letter-spacing="12" '
+            f'fill="{color}" stroke="{color}" stroke-width="2.6" stroke-linejoin="round" paint-order="stroke">HI</text>')
 
 def icon_for(kind, cx, cy, r, c, uid, bolt=False):
     if kind == "solar":
@@ -353,21 +358,53 @@ def loaf_heart(style):
         return g
     return draw
 
+
+def _heart_score(hx, hy, s, r):
+    return (f'<path d="{_heart(hx, hy, s)}" fill="none" stroke="#F7E6C1" stroke-width="{r*0.12:.1f}" stroke-linejoin="round"/>'
+            f'<path d="{_heart(hx + r*0.03, hy + r*0.04, s)}" fill="none" stroke="#6A3E17" stroke-width="{r*0.04:.1f}" opacity="0.7"/>')
+
+def loaf_shape(shape):
+    def draw(cx, cy, r, uid):
+        grad = (f'<radialGradient id="tc{uid}" cx="45%" cy="38%" r="65%"><stop offset="0" stop-color="#E9BC6B"/>'
+                f'<stop offset="0.65" stop-color="#C48536"/><stop offset="1" stop-color="#8A5222"/></radialGradient>')
+        if shape == "top":        # round boule seen from above at an angle: dark side crust, golden top
+            g = grad + (f'<ellipse cx="{cx}" cy="{cy + r*0.08:.1f}" rx="{r:.1f}" ry="{r*0.84:.1f}" fill="#7A461B"/>'
+                        f'<ellipse cx="{cx}" cy="{cy - r*0.02:.1f}" rx="{r*0.95:.1f}" ry="{r*0.74:.1f}" fill="url(#tc{uid})"/>')
+            g += _heart_score(cx, cy - r*0.02, r*0.42, r)
+        elif shape == "banneton":  # top view with the flour rings a proofing basket leaves
+            g = grad + f'<circle cx="{cx}" cy="{cy}" r="{r:.1f}" fill="url(#tc{uid})"/>'
+            for k in (0.92, 0.78, 0.64):
+                g += f'<circle cx="{cx}" cy="{cy}" r="{r*k:.1f}" fill="none" stroke="#FFF4DD" stroke-width="{r*0.035:.1f}" opacity="0.55"/>'
+            g += _heart_score(cx, cy + r*0.02, r*0.36, r)
+        else:                      # wide, low dome from the side, the way a real boule sits on the board
+            w, h = r*1.1, r*0.95
+            base = cy + r*0.93
+            body = (f'M{cx-w:.1f} {base:.1f} C{cx-w*1.04:.1f} {base-h*1.0:.1f} {cx-w*0.45:.1f} {base-h*1.55:.1f} {cx:.1f} {base-h*1.55:.1f} '
+                    f'C{cx+w*0.45:.1f} {base-h*1.55:.1f} {cx+w*1.04:.1f} {base-h*1.0:.1f} {cx+w:.1f} {base:.1f} Z')
+            g = (f'<linearGradient id="ld{uid}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#E6B566"/>'
+                 f'<stop offset="0.7" stop-color="#BF7E33"/><stop offset="1" stop-color="#7E4B1E"/></linearGradient>'
+                 f'<path d="{body}" fill="url(#ld{uid})"/>')
+            g += _heart_score(cx, base - h*0.8, r*0.38, r)
+        return g
+    return draw
+
 # where the O sits in "LO" (Montserrat 800, 72, letter-spacing 6, centred on 150): ink 143.5 to 200.5, 178 to 231
-O_CX, O_CY, O_R = 172.0, 204.5, 28.5
+O_CX, O_CY, O_R = 175.0, 200.5, 28.5
 
 def lay_o3(kind):
     """The icon takes the O's exact place, so the gap after the L matches normal letter spacing."""
     def draw(c, uid):
-        g = base(c, lo_text=False) + t(150, 230, 'L<tspan fill-opacity="0">O</tspan>', 72, c["lo"], ls=6)
+        g = base(c, lo_text=False) + t(153, 226, 'L<tspan fill-opacity="0">O</tspan>', 72, c["lo"], ls=6)
         if kind == "soccer":
             g += ball3(O_CX, O_CY, O_R, uid)
+        elif kind.startswith("shape-"):
+            g += loaf_shape(kind[6:])(O_CX, O_CY, O_R, uid)
         elif kind.startswith("heart"):
-            g += loaf_heart(int(kind[-1]))(O_CX, 214.0, 28.5, uid)
+            g += loaf_heart(int(kind[-1]))(O_CX, 210.0, 28.5, uid)
         elif kind == "sourdough":
-            g += loaf2(O_CX, 214.0, 28.5, uid)
+            g += loaf2(O_CX, 210.0, 28.5, uid)
         elif kind == "solar":
-            g += solar2(O_CX + 1.5, 211.0, 24.4, uid, sun_c=GOLDB, line=WHITE if c["inkbg"] == NAVY else NAVY, fill=c["inkbg"])
+            g += solar2(O_CX + 1.5, 207.0, 24.4, uid, sun_c=GOLDB, line=WHITE if c["inkbg"] == NAVY else NAVY, fill=c["inkbg"])
         return g
     return draw
 
@@ -405,8 +442,24 @@ for i, (k, title, tag, nm, desc) in enumerate(round3, 1):
           <div class="hilo-tile">{svg(lay_o3(k), N26, tag, "r3" + str(i))}</div>
           <figcaption><strong>{code}. {title}: {nm}</strong><span>{desc}</span></figcaption>
         </figure>''')
+shapes = [("shape-top", "Round Boule, From Above", "The R2 heart score on a round boule seen from above: dark side crust, golden top."),
+          ("shape-dome", "Low Dome", "The R2 heart score on a wide, low dome, the way a real boule sits on the board."),
+          ("shape-banneton", "Banneton Rings", "The R2 heart score on a round loaf with the flour rings a proofing basket leaves.")]
+lf = []
+for i, (k, nm, desc) in enumerate(shapes, 1):
+    lf.append(f'''        <figure class="logo-card hilo-card">
+          <div class="hilo-tile">{svg(lay_o3(k), N26, "SOURDOUGH", "lf" + str(i))}</div>
+          <figcaption><strong>L{i}. Sourdough: {nm}</strong><span>{desc}</span></figcaption>
+        </figure>''')
 sections.insert(0, f'''    <section class="logo-theme">
-      <h2>Newest: Realistic Ball and Heart Loaves</h2>
+      <h2>Newest: R2's Heart on a Better Loaf</h2>
+      <p>Three loaf shapes carrying the R2 heart score.  HI and LO are now balanced: same weight, same distance from the line, both centered.  Pick by L number.</p>
+      <div class="logo-grid">
+{chr(10).join(lf)}
+      </div>
+    </section>''')
+sections.insert(1, f'''    <section class="logo-theme">
+      <h2>Realistic Ball and Heart Loaves</h2>
       <p>All in the number 26 colors with the same single ring.  The icon now sits exactly where the O in LO would, so the space after the L matches normal letter spacing.  Pick by R number.</p>
       <div class="logo-grid">
 {chr(10).join(r3)}
