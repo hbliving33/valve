@@ -242,6 +242,135 @@ def svg(draw, c, tag, uid):
             f'<defs><clipPath id="c{uid}"><circle cx="150" cy="150" r="131"/></clipPath></defs>'
             f'<g clip-path="url(#c{uid})">{draw(c, uid)}</g>{ring}{tag_text(tag, c["tag"], size=26)}</svg>')
 
+
+# ---------- version 3: realistic ball and heart-scored loaves ----------
+def _ball_faces():
+    """Truncated icosahedron faces on the unit sphere, rotated so one pentagon faces the viewer with a slight tilt."""
+    import itertools, numpy as np
+    from scipy.spatial import ConvexHull
+    phi = (1 + 5 ** 0.5) / 2
+    base = [(0, 1, 3*phi), (1, 2 + phi, 2*phi), (phi, 2, 2*phi + 1)]
+    pts = set()
+    for b in base:
+        for perm in ((0, 1, 2), (1, 2, 0), (2, 0, 1)):
+            v = [b[perm[0]], b[perm[1]], b[perm[2]]]
+            for signs in itertools.product((1, -1), repeat=3):
+                pts.add(tuple(round(v[i]*signs[i], 6) for i in range(3)))
+    P = np.array(sorted(pts)); P /= np.linalg.norm(P[0])
+    hull = ConvexHull(P)
+    faces = {}
+    for simplex, eq in zip(hull.simplices, hull.equations):
+        key = tuple(np.round(eq[:3], 4))
+        faces.setdefault(key, set()).update(simplex)
+    out = []
+    for n, idx in faces.items():
+        n = np.array(n); idx = list(idx); c = P[idx].mean(axis=0)
+        u = P[idx[0]] - c; u /= np.linalg.norm(u); w = np.cross(n, u)
+        idx.sort(key=lambda i: math.atan2(np.dot(P[i]-c, w), np.dot(P[i]-c, u)))
+        out.append((n, P[idx]))
+    pent = next(n for n, v in out if len(v) == 5)
+    z = np.array([0, 0, 1.0]); a = np.cross(pent, z); s_ = np.linalg.norm(a); c_ = np.dot(pent, z)
+    K = np.array([[0, -a[2], a[1]], [a[2], 0, -a[0]], [-a[1], a[0], 0]])
+    R = np.eye(3) + K + K @ K * ((1 - c_) / (s_**2 if s_ else 1))
+    def rot(axis, deg):
+        t_ = math.radians(deg); cc, ss = math.cos(t_), math.sin(t_)
+        return {"x": np.array([[1, 0, 0], [0, cc, -ss], [0, ss, cc]]), "y": np.array([[cc, 0, ss], [0, 1, 0], [-ss, 0, cc]]), "z": np.array([[cc, -ss, 0], [ss, cc, 0], [0, 0, 1]])}[axis]
+    M = rot("x", -16) @ rot("y", 14) @ rot("z", 8) @ R
+    return [(M @ n, (M @ v.T).T) for n, v in out]
+
+_FACES = None
+
+def ball3(cx, cy, r, uid, patch="#1B1F3B"):
+    """A real-looking ball: curved panels on a sphere, lit from the upper left, with a soft shadow edge."""
+    import numpy as np
+    global _FACES
+    if _FACES is None:
+        _FACES = _ball_faces()
+    L = np.array([-0.45, -0.55, 0.7]); L /= np.linalg.norm(L)
+    g = (f'<radialGradient id="sh{uid}" cx="36%" cy="30%" r="78%"><stop offset="0" stop-color="#FFFFFF" stop-opacity="0.35"/>'
+         f'<stop offset="0.55" stop-color="#FFFFFF" stop-opacity="0"/><stop offset="1" stop-color="#0B0E22" stop-opacity="0.45"/></radialGradient>'
+         f'<clipPath id="bc{uid}"><circle cx="{cx}" cy="{cy}" r="{r}"/></clipPath>'
+         f'<circle cx="{cx}" cy="{cy}" r="{r}" fill="#F4F6FA"/><g clip-path="url(#bc{uid})">')
+    for n, verts in sorted(_FACES, key=lambda f: f[0][2]):
+        if n[2] < -0.25:
+            continue
+        path = []
+        k = len(verts)
+        for i in range(k):
+            a_, b_ = verts[i], verts[(i+1) % k]
+            for t_ in np.linspace(0, 1, 7)[:-1]:
+                q = a_*(1-t_) + b_*t_; q = q / np.linalg.norm(q)
+                path.append((cx + q[0]*r, cy + q[1]*r))
+        d = "M" + " L".join(f"{x:.2f} {y:.2f}" for x, y in path) + " Z"
+        lit = max(0.0, float(np.dot(n, L)))
+        if k == 5:
+            col = patch
+        else:
+            v = int(206 + 49*lit); col = f"rgb({v},{v+1},{min(255, v+4)})"
+        g += f'<path d="{d}" fill="{col}" stroke="#8D95A8" stroke-width="{max(r*0.018, 0.5):.2f}" stroke-linejoin="round"/>'
+    g += f'</g><circle cx="{cx}" cy="{cy}" r="{r}" fill="url(#sh{uid})"/>'
+    g += f'<circle cx="{cx}" cy="{cy}" r="{r - r*0.02:.2f}" fill="none" stroke="#E4E9F1" stroke-width="{r*0.04:.2f}"/>'
+    return g
+
+def _boule(cx, cy, r, uid):
+    w, h = r*1.0, r*0.95
+    base, top = cy + h*0.62, cy - h*0.92
+    body = (f'M{cx-w:.1f} {base-h*0.22:.1f} C{cx-w*1.02:.1f} {cy-h*0.55:.1f} {cx-w*0.55:.1f} {top:.1f} {cx:.1f} {top:.1f} '
+            f'C{cx+w*0.55:.1f} {top:.1f} {cx+w*1.02:.1f} {cy-h*0.55:.1f} {cx+w:.1f} {base-h*0.22:.1f} '
+            f'Q{cx+w*0.98:.1f} {base:.1f} {cx+w*0.7:.1f} {base:.1f} H{cx-w*0.7:.1f} Q{cx-w*0.98:.1f} {base:.1f} {cx-w:.1f} {base-h*0.22:.1f} Z')
+    g = (f'<linearGradient id="lc{uid}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#E2AE5C"/>'
+         f'<stop offset="0.6" stop-color="#C07F33"/><stop offset="1" stop-color="#7E4B1E"/></linearGradient>'
+         f'<radialGradient id="lf{uid}" cx="42%" cy="18%" r="50%"><stop offset="0" stop-color="#FFF8EA" stop-opacity="0.7"/>'
+         f'<stop offset="1" stop-color="#FFF8EA" stop-opacity="0"/></radialGradient>'
+         f'<path d="{body}" fill="url(#lc{uid})"/><path d="{body}" fill="url(#lf{uid})"/>')
+    return g, w, h
+
+def _heart(cx, cy, s):
+    """Heart outline centred at cx, cy; s is half its width."""
+    return (f'M{cx:.1f} {cy+s*0.95:.1f} C{cx-s*0.35:.1f} {cy+s*0.55:.1f} {cx-s:.1f} {cy+s*0.15:.1f} {cx-s:.1f} {cy-s*0.3:.1f} '
+            f'C{cx-s:.1f} {cy-s*0.75:.1f} {cx-s*0.35:.1f} {cy-s*0.85:.1f} {cx:.1f} {cy-s*0.35:.1f} '
+            f'C{cx+s*0.35:.1f} {cy-s*0.85:.1f} {cx+s:.1f} {cy-s*0.75:.1f} {cx+s:.1f} {cy-s*0.3:.1f} '
+            f'C{cx+s:.1f} {cy+s*0.15:.1f} {cx+s*0.35:.1f} {cy+s*0.55:.1f} {cx:.1f} {cy+s*0.95:.1f} Z')
+
+def loaf_heart(style):
+    def draw(cx, cy, r, uid):
+        g, w, h = _boule(cx, cy, r, uid)
+        hx, hy, s = cx, cy - h*0.3, w*0.48
+        if style == 1:      # one continuous heart score, opened up, with the ear casting a shadow on one side
+            g += (f'<path d="{_heart(hx, hy, s)}" fill="none" stroke="#F7E6C1" stroke-width="{r*0.13:.1f}" stroke-linejoin="round"/>'
+                  f'<path d="{_heart(hx + r*0.035, hy + r*0.045, s)}" fill="none" stroke="#6A3E17" stroke-width="{r*0.045:.1f}" opacity="0.7"/>')
+        elif style == 2:    # two curved scores meeting at the point, open at the top
+            for sgn in (-1, 1):
+                d = (f'M{hx + sgn*s*0.12:.1f} {hy - s*0.42:.1f} C{hx + sgn*s*0.5:.1f} {hy - s*0.95:.1f} {hx + sgn*s*1.1:.1f} {hy - s*0.55:.1f} '
+                     f'{hx + sgn*s*0.95:.1f} {hy - s*0.1:.1f} C{hx + sgn*s*0.8:.1f} {hy + s*0.35:.1f} {hx + sgn*s*0.3:.1f} {hy + s*0.6:.1f} {hx:.1f} {hy + s*0.95:.1f}')
+                g += (f'<path d="{d}" fill="none" stroke="#F7E6C1" stroke-width="{r*0.12:.1f}" stroke-linecap="round"/>'
+                      f'<path d="{d}" fill="none" stroke="#6A3E17" stroke-width="{r*0.04:.1f}" stroke-linecap="round" opacity="0.65" transform="translate({r*0.03:.1f} {r*0.04:.1f})"/>')
+        else:               # flour stencil: a heart dusted onto the dark crust, the way bakers stencil boules
+            g += (f'<path d="{_heart(hx, hy + s*0.05, s*1.05)}" fill="#FFF8EA" opacity="0.92"/>'
+                  f'<path d="{_heart(hx, hy + s*0.05, s*1.05)}" fill="none" stroke="#FFF8EA" stroke-width="{r*0.05:.1f}" opacity="0.45"/>')
+        for dx, dy, rr in ((-0.6, 0.1, 0.035), (0.6, 0.15, 0.03), (0.2, 0.35, 0.03)):
+            g += f'<circle cx="{cx+w*dx:.1f}" cy="{cy+h*dy:.1f}" r="{r*rr:.1f}" fill="#FFF8EA" opacity="0.55"/>'
+        return g
+    return draw
+
+# where the O sits in "LO" (Montserrat 800, 72, letter-spacing 6, centred on 150): ink 143.5 to 200.5, 178 to 231
+O_CX, O_CY, O_R = 172.0, 204.5, 28.5
+
+def lay_o3(kind):
+    """The icon takes the O's exact place, so the gap after the L matches normal letter spacing."""
+    def draw(c, uid):
+        g = base(c, lo_text=False) + t(150, 230, 'L<tspan fill-opacity="0">O</tspan>', 72, c["lo"], ls=6)
+        if kind == "soccer":
+            g += ball3(O_CX, O_CY, O_R, uid)
+        elif kind.startswith("heart"):
+            g += loaf_heart(int(kind[-1]))(O_CX, 214.0, 28.5, uid)
+        elif kind == "sourdough":
+            g += loaf2(O_CX, 214.0, 28.5, uid)
+        elif kind == "solar":
+            g += solar2(O_CX + 1.5, 211.0, 24.4, uid, sun_c=GOLDB, line=WHITE if c["inkbg"] == NAVY else NAVY, fill=c["inkbg"])
+        return g
+    return draw
+
 sections, n = [], 0
 for key, title, tag in DISCIPLINES:
     cards = []
@@ -259,6 +388,28 @@ for key, title, tag in DISCIPLINES:
       <h2>{title}</h2>
       <div class="logo-grid">
 {chr(10).join(cards)}
+      </div>
+    </section>''')
+
+N26 = SCHEMES[0]
+round3 = [("soccer", "Soccer", "SOCCER", "Realistic Ball", "A real-looking ball: curved panels on a sphere, lit from the upper left.  It sits exactly where the O sits."),
+          ("heart1", "Sourdough", "SOURDOUGH", "Heart Score", "One heart-shaped score cut into the boule, opened up, with the ear casting a shadow."),
+          ("heart2", "Sourdough", "SOURDOUGH", "Two Scores, One Heart", "Two curved scores that meet at the point, open at the top, the way a baker cuts it."),
+          ("heart3", "Sourdough", "SOURDOUGH", "Flour Heart", "A heart dusted in flour on the crust, the stencil bakers use on boules."),
+          ("sourdough", "Sourdough", "SOURDOUGH", "Current Pick (13), Re-spaced", "Number 13 with the loaf moved to exactly where the O sits."),
+          ("solar", "Solar", "SOLAR", "Number 1, Re-spaced", "Your solar pick, with the icon moved to exactly where the O sits.")]
+r3 = []
+for i, (k, title, tag, nm, desc) in enumerate(round3, 1):
+    code = f"R{i}"
+    r3.append(f'''        <figure class="logo-card hilo-card">
+          <div class="hilo-tile">{svg(lay_o3(k), N26, tag, "r3" + str(i))}</div>
+          <figcaption><strong>{code}. {title}: {nm}</strong><span>{desc}</span></figcaption>
+        </figure>''')
+sections.insert(0, f'''    <section class="logo-theme">
+      <h2>Newest: Realistic Ball and Heart Loaves</h2>
+      <p>All in the number 26 colors with the same single ring.  The icon now sits exactly where the O in LO would, so the space after the L matches normal letter spacing.  Pick by R number.</p>
+      <div class="logo-grid">
+{chr(10).join(r3)}
       </div>
     </section>''')
 
