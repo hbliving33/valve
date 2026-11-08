@@ -21,7 +21,7 @@ const PEOPLE = {
   anyone:  { name: "",        site: "valve",   title: "Get in touch",   intro: "Tell us what you need and who you'd like to reach.  We'll get your message to the right person." },
   vincent: { name: "Vincent", site: "vincent", title: "Contact Vincent", intro: "Tell Vincent what you need and he'll put together a quote." },
   ayden:   { name: "Ayden",   site: "ayden",   title: "Contact Ayden",   intro: "Send Ayden a note with the student's grade and what they need help with, and he'll get back to you.", hint: "Student's grade, subject and what they need help with" },
-  lauren:  { name: "Lauren",  site: "lauren",  title: "Contact Lauren",  intro: "Tell Lauren whether it's about sourdough bread, soccer training or solar, and she'll get back to you." },
+  lauren:  { name: "Lauren",  site: "lauren",  title: "Contact Lauren",  intro: "Tell Lauren whether it's about solar, sourdough or soccer, and she'll get back to you." },
   vicki:   { name: "Vicki",   site: "vicki",   title: "Contact Vicki",   intro: "Tell Vicki who you're looking for, or what kind of help you need, and she'll get back to you." },
   eric:    { name: "Eric",    site: "eric",    title: "Contact Eric",    intro: "Tell Eric what you need help with, and he'll get back to you." },
 };
