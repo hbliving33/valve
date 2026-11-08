@@ -350,7 +350,13 @@ textarea { min-height: 8rem; resize: vertical; }
 .split .gallery { margin-top: 0; padding-top: 1.4rem; }
 .split { padding-block: clamp(2.5rem, 6vw, 4.5rem); display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(2rem, 6vw, 5rem); }
 .split-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(2rem, 4vw, 3.5rem); }
-@media (max-width: 1050px) { .split.split-3 { grid-template-columns: 1fr; } .split-3 .gallery { max-width: 26rem; } }
+.split-3 { gap: 1.5rem; }
+.split-3 > section { grid-row: span 4; background: #fff; border: 1px solid var(--rule); border-top: 4px solid var(--gold); border-radius: 8px; padding: 1.6rem 1.6rem 1.6rem; }
+.split-3 > section > p:first-of-type { max-width: none; }
+.split-3 .gallery { grid-template-columns: 1fr; }
+.split-3 .link { text-decoration: none; }
+.split-3 .link:hover { text-decoration: underline; text-decoration-color: var(--navy); text-underline-offset: 0.3em; text-decoration-thickness: 2px; }
+@media (max-width: 1050px) { .split.split-3 { grid-template-columns: 1fr; max-width: 30rem; } }
 .split h2 { font-family: var(--display); font-weight: 800; font-size: clamp(1.6rem, 3.2vw, 2.1rem); line-height: 1.15; margin: 0 0 1rem; }
 .helps { list-style: none; padding: 0; margin: 0; }
 .helps li { padding: 0.75rem 0; border-top: 1px solid var(--rule); }
