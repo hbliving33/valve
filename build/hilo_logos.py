@@ -63,13 +63,18 @@ LAYOUTS = [
     ("Half and Half", L6, "The circle is split: the top half filled for HI, the bottom open for LO."),
 ]
 
+def tag_text(s, color, y=330, size=26):
+    """Tagline under the circle: always exactly 200 units wide, whatever the word."""
+    return (f'<text x="150" y="{y}" text-anchor="middle" textLength="200" lengthAdjust="spacing" font-family="{FONT}" '
+            f'font-weight="800" font-size="{size}" fill="{color}">{s}</text>')
+
 def svg(layout, c):
     ring = f'<circle cx="150" cy="150" r="136" fill="{c["disc"]}" stroke="{c["ring"]}" stroke-width="6"/>'
     if c["ring2"]:
         ring += f'<circle cx="150" cy="150" r="124" fill="none" stroke="{c["ring2"]}" stroke-width="2"/>'
     clip = '<clipPath id="CLIP"><circle cx="150" cy="150" r="131"/></clipPath>'
     body = f'<g clip-path="url(#CLIP)">{layout(c)}</g>'
-    tag = t(150, 330, "GET IT?", 26, c["tag"], weight=800, ls=5)
+    tag = tag_text("GET IT?", c["tag"])
     return (f'<svg viewBox="0 0 300 350" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="HILO logo with tagline Get it?">'
             f'<defs>{clip}</defs>{ring}{body}{tag}</svg>')
 

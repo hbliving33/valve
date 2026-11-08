@@ -159,13 +159,18 @@ LAYOUTS = [
 
 DISCIPLINES = [("solar", "Solar", "SOLAR"), ("sourdough", "Sourdough", "SOURDOUGH"), ("soccer", "Soccer", "SOCCER")]
 
+def tag_text(s, color, y=330, size=26):
+    """Tagline under the circle: always exactly 200 units wide, whatever the word."""
+    return (f'<text x="150" y="{y}" text-anchor="middle" textLength="200" lengthAdjust="spacing" font-family="{FONT}" '
+            f'font-weight="800" font-size="{size}" fill="{color}">{s}</text>')
+
 def svg(draw, c, tag, uid):
     ring = f'<circle cx="150" cy="150" r="136" fill="none" stroke="{c["ring"]}" stroke-width="6"/>'
     if c["ring2"]:
         ring += f'<circle cx="150" cy="150" r="124" fill="none" stroke="{c["ring"]}" stroke-width="2"/>'
     return (f'<svg viewBox="0 0 300 350" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="HILO {tag.lower()} logo option {uid}">'
             f'<defs><clipPath id="c{uid}"><circle cx="150" cy="150" r="131"/></clipPath></defs>'
-            f'<g clip-path="url(#c{uid})">{draw(c, uid)}</g>{ring}{t(150, 330, tag, 26, c["tag"], ls=5)}</svg>')
+            f'<g clip-path="url(#c{uid})">{draw(c, uid)}</g>{ring}{tag_text(tag, c["tag"], size=26)}</svg>')
 
 sections, n = [], 0
 for key, title, tag in DISCIPLINES:
