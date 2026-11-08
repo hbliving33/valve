@@ -351,6 +351,8 @@ textarea { min-height: 8rem; resize: vertical; }
 .split { padding-block: clamp(2.5rem, 6vw, 4.5rem); display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(2rem, 6vw, 5rem); }
 .split-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(2rem, 4vw, 3.5rem); }
 .split-3 { gap: 1.5rem; }
+.split-3 h2.card-title { display: flex; align-items: center; gap: 0.85rem; }
+.split-3 .card-logo { width: 3.4rem; height: 3.4rem; flex: 0 0 auto; }
 .split-3 > section { grid-row: span 4; background: #fff; border: 1px solid var(--rule); border-top: 4px solid var(--gold); border-radius: 8px; padding: 1.6rem 1.6rem 1.6rem; }
 .split-3 > section > p:first-of-type { max-width: none; }
 .split-3 .gallery { grid-template-columns: 1fr; }
