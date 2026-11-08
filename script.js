@@ -16,16 +16,17 @@ const MAIL_KEY = {
 };
 
 // The one contact form (contact.html).  Every "Contact Vicki" style link opens it as contact.html?to=vicki,
-// so the person is already picked and the visitor never touches the drop-down.  Lauren's links can add &about=sourdough or &about=soccer.
+// so the person is already picked and the visitor never touches the drop-down.  Lauren's links can add &about=sourdough, &about=soccer or &about=solar.
 const PEOPLE = {
   anyone:  { name: "",        site: "valve",   title: "Get in touch",   intro: "Tell us what you need and who you'd like to reach.  We'll get your message to the right person." },
   vincent: { name: "Vincent", site: "vincent", title: "Contact Vincent", intro: "Tell Vincent what you need and he'll put together a quote." },
   ayden:   { name: "Ayden",   site: "ayden",   title: "Contact Ayden",   intro: "Send Ayden a note with the student's grade and what they need help with, and he'll get back to you.", hint: "Student's grade, subject and what they need help with" },
-  lauren:  { name: "Lauren",  site: "lauren",  title: "Contact Lauren",  intro: "Tell Lauren whether it's about sourdough bread or soccer training, and she'll get back to you." },
+  lauren:  { name: "Lauren",  site: "lauren",  title: "Contact Lauren",  intro: "Tell Lauren whether it's about sourdough bread, soccer training or solar, and she'll get back to you." },
   vicki:   { name: "Vicki",   site: "vicki",   title: "Contact Vicki",   intro: "Tell Vicki who you're looking for, or what kind of help you need, and she'll get back to you." },
   eric:    { name: "Eric",    site: "eric",    title: "Contact Eric",    intro: "Tell Eric what you need help with, and he'll get back to you." },
 };
-const LAUREN_HINT = { sourdough: "How many loaves you'd like and when you need them", soccer: "Your player's age and what they want to work on" };
+const LAUREN_HINT = { sourdough: "How many loaves you'd like and when you need them", soccer: "Your player's age and what they want to work on", solar: "Your city, and roughly what your monthly electric bill runs" };
+const LAUREN_TOPIC = { sourdough: "sourdough", soccer: "soccer training", solar: "solar" };
 
 const smart = document.querySelector("form[data-smart]");
 if (smart) {
@@ -44,7 +45,7 @@ if (smart) {
     const isLauren = key === "lauren";
     aboutLabel.hidden = !isLauren;
     smart.dataset.site = p.site;
-    topic.value = isLauren ? `Lauren (${about.value === "soccer" ? "soccer training" : "sourdough"})` : (p.name || "Anyone");
+    topic.value = isLauren ? `Lauren (${LAUREN_TOPIC[about.value] || "sourdough"})` : (p.name || "Anyone");
     document.getElementById("c-title").textContent = p.title;
     document.getElementById("c-intro").textContent = p.intro;
     document.getElementById("sending-name").textContent = p.name;
@@ -62,7 +63,7 @@ if (smart) {
     whoLabel.hidden = true;          // already picked from their link: show "Sending to Vicki" instead of the drop-down
     sendingTo.hidden = false;
   }
-  if (q.get("about") === "soccer") about.value = "soccer";
+  if (LAUREN_TOPIC[q.get("about")]) about.value = q.get("about");
   smart.querySelector("#change-person").addEventListener("click", () => {
     sendingTo.hidden = true; whoLabel.hidden = false; to.focus();
   });
